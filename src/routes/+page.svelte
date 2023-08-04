@@ -40,7 +40,7 @@
 					</p>
 					<div>
 						<a
-							href="/"
+							href="/dashboard"
 							class="inline-block py-3 px-6 rounded-global border-2 hover:bg-primary-500 text-white border-primary-500 transition"
 							>Get started</a
 						>
