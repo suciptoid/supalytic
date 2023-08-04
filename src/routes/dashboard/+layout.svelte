@@ -1,0 +1,2 @@
+helo dashboard
+<slot/>
