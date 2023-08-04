@@ -22,6 +22,9 @@ export default {
 			},
 			colors: {
 				primary: colors.green
+			},
+			borderRadius: {
+				global: '1rem'
 			}
 		}
 	},
