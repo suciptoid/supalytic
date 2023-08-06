@@ -1,9 +1,11 @@
 (function () {
   var endpoint = document.currentScript.getAttribute('data-endpoint');
+  var title = document.title;
+  var ref = document.referrer.indexOf(location.origin) < 0 ? document.referrer : '';
 
-  window.track = function (event_name = 'page_view', customData = {}) {
+  function track(event_name = 'page_view', customData = {}) {
     var data = {
-      title: document.title,
+      title: title,
       host: location.hostname,
       path: location.pathname,
       ua: navigator.userAgent,
@@ -14,7 +16,6 @@
           : navigator.userLanguage || navigator.language || navigator.browserLanguage || 'en'
     };
 
-    var ref = document.referrer.indexOf(location.origin) < 0 ? document.referrer : '';
     if (ref !== '') {
       data.ref = ref;
     }
@@ -34,6 +35,8 @@
       }
     };
 
+    console.log('track', payload);
+
     fetch(endpoint, {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -41,7 +44,29 @@
         'Content-Type': 'application/json'
       }
     });
-  };
+  }
+
+  function watchTitle() {
+    const callback = ([entry]) => {
+      title = entry && entry.target ? entry.target.text : undefined;
+    };
+
+    const observer = new MutationObserver(callback);
+
+    const node = document.querySelector('head > title');
+
+    if (node) {
+      observer.observe(node, {
+        subtree: true,
+        characterData: true,
+        childList: true
+      });
+    }
+  }
+
+  window.track = track;
+
+  watchTitle();
 
   track();
 
@@ -49,21 +74,22 @@
     track();
   });
 
-  window.addEventListener('popstate', function (e) {
-    track();
-  });
-
   var history = window.history;
   if (history.pushState) {
-    var pushState = history.pushState;
-    history.pushState = function (state) {
-      if (typeof history.onpushstate == 'function') {
-        history.onpushstate({ state: state });
-      }
-      var ref = window.location.href;
-      pushState.apply(this, arguments);
+    var originalFn = history['pushState'];
+    history.pushState = function () {
+      ref = window.location.href;
+      originalFn.apply(this, arguments);
 
-      track(undefined, { ref });
+      if (ref != window.location.href) {
+        setTimeout(function () {
+          track();
+        }, 500);
+      }
     };
+
+    window.addEventListener('popstate', function (e) {
+      track();
+    });
   }
 })();
