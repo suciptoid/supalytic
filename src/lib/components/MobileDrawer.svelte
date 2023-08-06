@@ -13,8 +13,8 @@
 <div class="{className} fixed bottom-0 left-0 right-0 top-0 bg-black transition">
   <div class="px-4 py-4">
     <button on:click={() => (isShow = false)} class="transition hover:text-white md:hidden">
-      <Icon icon="akar-icons:three-line-horizontal" width={20} height={20} />
+      <Icon icon="akar-icons:cross" width={20} height={20} />
     </button>
   </div>
-  menu goes here
+  <slot/>
 </div>
