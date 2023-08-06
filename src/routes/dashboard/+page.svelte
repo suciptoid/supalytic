@@ -1,5 +1,4 @@
 <script lang="ts">
-	export let websites = [];
 </script>
 
 <h2>Websites</h2>

@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1691295699263,
+      "tag": "0000_lonely_white_tiger",
+      "breakpoints": true
+    }
+  ]
+}

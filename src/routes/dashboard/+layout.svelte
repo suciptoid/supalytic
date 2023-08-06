@@ -8,7 +8,6 @@
 
 <Header />
 
-<main class="w-full max-w-6xl m-auto">
+<main class="m-auto w-full max-w-6xl">
 	<slot />
 </main>
-

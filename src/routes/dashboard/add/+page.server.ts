@@ -1,4 +1,6 @@
 import { fail, type Actions } from '@sveltejs/kit';
+import { db } from '$lib/server/db';
+import { website, websiteUsers } from '$lib/server/db/schema';
 
 export const actions = {
 	default: async ({ request, locals: { getSession, supabase } }) => {
@@ -6,16 +8,25 @@ export const actions = {
 			const session = await getSession();
 
 			const form = await request.formData();
-			const website = {
-				name: form.get('name'),
-				domain: form.get('domain')
+			const data = {
+				name: form.get('name')!.toString(),
+				domain: form.get('domain')!.toString()
 			};
 
-			const insert = await supabase.from('websites').insert(website);
+			// const insert = await supabase.from('websites').insert(website);
+			await db.transaction(async (tx) => {
+				const insert = await tx.insert(website).values(data).returning({ id: website.id });
 
-			console.log('default actions', { website, user: session?.user, insert });
+				await tx.insert(websiteUsers).values({
+					userId: session!.user.id,
+					websiteId: insert[0].id
+				});
+			});
+
+			console.log('default actions', { website });
 			return { success: true };
-		} catch {
+		} catch (e) {
+			console.log('error', e);
 			return fail(400, { success: false });
 		}
 	}
