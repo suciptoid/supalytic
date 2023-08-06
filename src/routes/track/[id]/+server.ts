@@ -19,3 +19,13 @@ export const POST = (async ({ url, params, request, locals: { db } }) => {
     status: 201
   });
 }) satisfies RequestHandler;
+
+export const OPTIONS = (async () => {
+  return new Response(null, {
+    headers: {
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*'
+    }
+  });
+}) satisfies RequestHandler;
