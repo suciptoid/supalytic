@@ -1,33 +1,30 @@
-import { fail, type Actions } from '@sveltejs/kit';
-import { db } from '$lib/server/db';
-import { website, websiteUsers } from '$lib/server/db/schema';
+import { fail, type Actions, redirect } from '@sveltejs/kit';
 
 export const actions = {
-	default: async ({ request, locals: { getSession, supabase } }) => {
-		try {
-			const session = await getSession();
+  default: async ({ request, locals: { getSession, supabase, db } }) => {
+    const session = await getSession();
 
-			const form = await request.formData();
-			const data = {
-				name: form.get('name')!.toString(),
-				domain: form.get('domain')!.toString()
-			};
+    const form = await request.formData();
+    const data = {
+      name: form.get('name')!.toString(),
+      domain: form.get('domain')!.toString()
+    };
 
-			// const insert = await supabase.from('websites').insert(website);
-			await db.transaction(async (tx) => {
-				const insert = await tx.insert(website).values(data).returning({ id: website.id });
+    try {
+      const insert = await db.from('websites').insert(data).select().single();
+      const uw = await db
+        .from('website_users')
+        .insert({
+          user_id: session!.user.id,
+          website_id: insert.data!.id
+        })
+        .select()
+        .single();
+    } catch (e) {
+      console.log('error', e);
+      return fail(400, { success: false });
+    }
 
-				await tx.insert(websiteUsers).values({
-					userId: session!.user.id,
-					websiteId: insert[0].id
-				});
-			});
-
-			console.log('default actions', { website });
-			return { success: true };
-		} catch (e) {
-			console.log('error', e);
-			return fail(400, { success: false });
-		}
-	}
+    throw redirect(303, '/dashboard');
+  }
 } satisfies Actions;
