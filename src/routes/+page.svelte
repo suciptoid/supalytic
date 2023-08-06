@@ -13,7 +13,7 @@
 	<title>Supalytic - Your Complete Web Analytics Solution!</title>
 </svelte:head>
 
-<div class="bg-black/95 min-h-screen text-gray-400">
+<div class="bg-black/95 min-h-screen text-gray-400 font-landingsans">
 	<div class="container">
 		<nav class="flex items-center justify-between py-8">
 			<MobileDrawer />

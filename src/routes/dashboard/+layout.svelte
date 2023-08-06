@@ -1,5 +1,14 @@
+<script>
+	import Header from './header.svelte';
+</script>
+
 <svelte:head>
 	<title>Supalytic | Dashboard</title>
 </svelte:head>
 
-<slot/>
+<Header />
+
+<main class="w-full max-w-6xl m-auto">
+	<slot />
+</main>
+
