@@ -1,5 +1,6 @@
 <script lang="ts">
   import MobileDrawer from '$lib/components/MobileDrawer.svelte';
+  import Render from '$lib/components/Render.svelte';
   import Button from '$lib/components/button/Button.svelte';
   import Icon from '@iconify/svelte';
   let navMenu = [
@@ -14,7 +15,7 @@
   <title>Supalytic - Your Complete Web Analytics Solution!</title>
 </svelte:head>
 
-<div class="min-h-screen bg-black/95 font-landingsans text-gray-400">
+<div class="min-h-screen bg-[#0f0f0f] font-landingsans text-gray-400">
   <div class="container">
     <nav class="flex items-center justify-between py-8">
       <MobileDrawer>
@@ -45,9 +46,11 @@
     </nav>
 
     <main>
-      <div class="flex justify-between py-20">
+      <div class="flex flex-col-reverse justify-between py-20 lg:flex-row">
         <div class="space-y-8 lg:basis-1/2">
-          <h1 class="text-6xl font-semibold text-white">Unlock the Power of Your Data</h1>
+          <h1 class="text-6xl font-semibold text-white">
+            Unlock <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-sky-600">the Power </span>of Your Data
+          </h1>
           <p class="text-lg">
             Supalytic is the ultimate web analytics tool designed to empower businesses of all
             sizes. Dive deep into your website's performance, uncover valuable insights, and make
@@ -58,7 +61,8 @@
           </div>
         </div>
         <div class="">
-          <img src="/images/chart.svg" alt="chart" />
+          <Render />
+          <!-- <img src="/images/chart.svg" alt="chart" /> -->
         </div>
       </div>
 
