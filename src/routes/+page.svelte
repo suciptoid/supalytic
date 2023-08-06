@@ -1,5 +1,7 @@
 <script lang="ts">
+  import Card from '$lib/components/Card.svelte';
   import MobileDrawer from '$lib/components/MobileDrawer.svelte';
+  import Render from '$lib/components/Render.svelte';
   import Button from '$lib/components/button/Button.svelte';
   import Icon from '@iconify/svelte';
   let navMenu = [
@@ -14,7 +16,7 @@
   <title>Supalytic - Your Complete Web Analytics Solution!</title>
 </svelte:head>
 
-<div class="min-h-screen bg-black/95 font-landingsans text-gray-400">
+<div class="min-h-screen bg-[#0f0f0f] font-landingsans text-gray-400">
   <div class="container">
     <nav class="flex items-center justify-between py-8">
       <MobileDrawer>
@@ -45,9 +47,14 @@
     </nav>
 
     <main>
-      <div class="flex py-20">
+      <div class="flex flex-col-reverse justify-between py-20 lg:flex-row lg:py-28">
         <div class="space-y-8 lg:basis-1/2">
-          <h1 class="text-6xl font-semibold text-white">Unlock the Power of Your Data</h1>
+          <h1 class="text-6xl font-semibold text-white">
+            Unlock <span
+              class="bg-gradient-to-r from-primary-500 to-sky-600 bg-clip-text text-transparent"
+              >the Power
+            </span>of Your Data
+          </h1>
           <p class="text-lg">
             Supalytic is the ultimate web analytics tool designed to empower businesses of all
             sizes. Dive deep into your website's performance, uncover valuable insights, and make
@@ -57,50 +64,66 @@
             <Button primary href="/dashboard">Get started</Button>
           </div>
         </div>
-      </div>
-
-      <div class="flex py-20">
-        <div class="space-y-8 lg:basis-2/3">
-          <h2 class="text-4xl font-semibold text-white">Real-Time Tracking and Reporting</h2>
-          <p class="text-lg">
-            Stay ahead of the game with real-time tracking and reporting. Instantly monitor visitor
-            behavior, traffic sources, conversion rates, and more, all at your fingertips. With
-            Supalytic, you'll never miss a beat.
-          </p>
+        <div class="">
+          <Render />
         </div>
       </div>
 
-      <div class="flex py-20">
+      <div class="py-20">
         <div class="space-y-8 lg:basis-2/3">
-          <h2 class="text-4xl font-semibold text-white">User-Friendly Interface</h2>
+          <h2 class="text-4xl font-semibold text-white">
+            Discover Your Complete Web Analytics Solution
+          </h2>
           <p class="text-lg">
-            No technical expertise required! Our user-friendly interface makes it easy for anyone to
-            navigate and understand complex data. Effortlessly create custom reports and dashboards
-            tailored to your unique needs.
+            Elevate your web analytics game and stay one step ahead in today's competitive online
+            landscape.
           </p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8 py-20 lg:grid-cols-3">
+          <Card>
+            <div class="space-y-6">
+              <Icon icon="akar-icons:thunder" class="text-blue-500" width={64} height={64} />
+              <h2 class="text-xl font-semibold text-white">Real-Time Reporting</h2>
+              <p class="">
+                Stay ahead of the game with real-time tracking and reporting. Instantly monitor
+                visitor behavior, traffic sources, conversion rates, and more, all at your
+                fingertips. With Supalytic, you'll never miss a beat.
+              </p>
+            </div>
+          </Card>
+          <Card>
+            <div class="space-y-6">
+              <Icon icon="akar-icons:cursor" class="text-cyan-500" width={64} height={64} />
+              <h2 class="text-xl font-semibold text-white">User-Friendly Interface</h2>
+              <p class="">
+                No technical expertise required! Our user-friendly interface makes it easy for
+                anyone to navigate and understand complex data. Effortlessly create custom reports
+                and dashboards tailored to your unique needs.
+              </p>
+            </div>
+          </Card>
+          <Card>
+            <div class="space-y-6">
+              <Icon
+                icon="akar-icons:statistic-up"
+                class="text-primary-500"
+                width={64}
+                height={64}
+              />
+              <h2 class="text-xl font-semibold text-white">Comprehensive Data Visualization</h2>
+              <p class="">
+                Data should be more than just numbers - it should tell a story. Supalytic's
+                intuitive data visualization tools transform raw data into beautiful charts and
+                graphs, making it simple to grasp trends and patterns at a glance.
+              </p>
+            </div>
+          </Card>
         </div>
       </div>
 
-      <div class="flex py-20">
-        <div class="space-y-8 lg:basis-2/3">
-          <h2 class="text-4xl font-semibold text-white">Comprehensive Data Visualization</h2>
-          <p class="text-lg">
-            Data should be more than just numbers - it should tell a story. Supalytic's intuitive
-            data visualization tools transform raw data into beautiful charts and graphs, making it
-            simple to grasp trends and patterns at a glance.
-          </p>
-        </div>
-      </div>
-
-      <div class="flex py-20">
-        <div class="space-y-8 lg:basis-2/3">
-          <h2 class="text-4xl font-semibold text-white">Actionable Insights, Always</h2>
-          <p class="text-lg">
-            Supalytic doesn't just provide data; it delivers actionable insights. Identify
-            strengths, pinpoint weaknesses, and seize new opportunities to optimize your website's
-            performance and drive growth.
-          </p>
-        </div>
+      <div class="">
+        <img src="/images/chart.svg" alt="chart" />
       </div>
 
       <div class="flex py-20">
