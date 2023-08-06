@@ -45,7 +45,7 @@
     </nav>
 
     <main>
-      <div class="flex py-20">
+      <div class="flex justify-between py-20">
         <div class="space-y-8 lg:basis-1/2">
           <h1 class="text-6xl font-semibold text-white">Unlock the Power of Your Data</h1>
           <p class="text-lg">
@@ -56,6 +56,9 @@
           <div>
             <Button primary href="/dashboard">Get started</Button>
           </div>
+        </div>
+        <div class="">
+          <img src="/images/chart.svg" alt="chart" />
         </div>
       </div>
 
@@ -90,6 +93,10 @@
             simple to grasp trends and patterns at a glance.
           </p>
         </div>
+      </div>
+
+      <div class="">
+        <img src="/images/chart.svg" alt="chart" />
       </div>
 
       <div class="flex py-20">
