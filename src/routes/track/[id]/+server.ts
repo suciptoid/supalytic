@@ -23,9 +23,12 @@ export const POST = (async ({ url, params, request, locals: { db } }) => {
 export const OPTIONS = (async () => {
   return new Response(null, {
     headers: {
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, PUT, PATCH, POST, OPTIONS, HEAD',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': '*'
     }
   });
 }) satisfies RequestHandler;
+
+export const HEAD = OPTIONS;
+export const GET = OPTIONS;
