@@ -9,6 +9,37 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      website_events: {
+        Row: {
+          created_at: string
+          data: Json | null
+          event_name: string | null
+          id: string
+          website_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          event_name?: string | null
+          id?: string
+          website_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          event_name?: string | null
+          id?: string
+          website_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "website_events_website_id_fkey"
+            columns: ["website_id"]
+            referencedRelation: "websites"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       website_users: {
         Row: {
           created_at: string | null
