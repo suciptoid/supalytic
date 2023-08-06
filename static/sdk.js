@@ -35,8 +35,6 @@
       }
     };
 
-    console.log('track', payload);
-
     fetch(endpoint, {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -64,6 +62,26 @@
     }
   }
 
+  function checkLink(el) {
+    return el && el.tagName && el.tagName.toLowerCase() === 'a';
+  }
+  function findLink(link) {
+    if (link && (!checkLink(link) || !link.href)) {
+      link = link.parentNode;
+    }
+    return link;
+  }
+
+  function handleClick(e) {
+    const link = findLink(e.target);
+
+    if (link && link.href && link.host && link.host !== location.host) {
+      track('click_outbound', {
+        click_outbound: link.href
+      });
+    }
+  }
+
   window.track = track;
 
   watchTitle();
@@ -73,6 +91,8 @@
   window.addEventListener('hashchange', function () {
     track();
   });
+
+  document.addEventListener('click', handleClick);
 
   var history = window.history;
   if (history.pushState) {
