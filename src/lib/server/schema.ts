@@ -53,6 +53,12 @@ export interface Database {
           {
             foreignKeyName: "sessions_website_id_fkey"
             columns: ["website_id"]
+            referencedRelation: "website_metrics"
+            referencedColumns: ["website_id"]
+          },
+          {
+            foreignKeyName: "sessions_website_id_fkey"
+            columns: ["website_id"]
             referencedRelation: "website_stats"
             referencedColumns: ["website_id"]
           }
@@ -99,6 +105,12 @@ export interface Database {
           {
             foreignKeyName: "website_events_website_id_fkey"
             columns: ["website_id"]
+            referencedRelation: "website_metrics"
+            referencedColumns: ["website_id"]
+          },
+          {
+            foreignKeyName: "website_events_website_id_fkey"
+            columns: ["website_id"]
             referencedRelation: "website_stats"
             referencedColumns: ["website_id"]
           }
@@ -139,6 +151,12 @@ export interface Database {
           {
             foreignKeyName: "website_users_website_id_fkey"
             columns: ["website_id"]
+            referencedRelation: "website_metrics"
+            referencedColumns: ["website_id"]
+          },
+          {
+            foreignKeyName: "website_users_website_id_fkey"
+            columns: ["website_id"]
             referencedRelation: "website_stats"
             referencedColumns: ["website_id"]
           }
@@ -167,6 +185,22 @@ export interface Database {
       }
     }
     Views: {
+      website_metrics: {
+        Row: {
+          browser: string | null
+          device: string | null
+          event_count: number | null
+          event_name: string | null
+          hour: string | null
+          os: string | null
+          path: string | null
+          referer: string | null
+          screen: number | null
+          website_domain: string | null
+          website_id: string | null
+        }
+        Relationships: []
+      }
       website_stats: {
         Row: {
           hour: string | null
@@ -178,6 +212,19 @@ export interface Database {
       }
     }
     Functions: {
+      get_metrics: {
+        Args: {
+          website_id: string
+          metric_name: string
+          range: string
+        }
+        Returns: {
+          name: string
+          value: string
+          count: number
+          timeframe: string
+        }[]
+      }
       get_session: {
         Args: {
           p_ip: string
