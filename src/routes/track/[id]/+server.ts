@@ -22,9 +22,9 @@ const getDeviceType = (width: number, os: string) => {
 };
 
 export const POST = (async ({ url, params, request, locals: { db } }) => {
+  let session_id = null;
   try {
     const data = await request.json();
-
     const values = {
       ...data,
       website_id: params.id
@@ -36,33 +36,18 @@ export const POST = (async ({ url, params, request, locals: { db } }) => {
 
     const ip = getIp(request.headers);
 
-    console.log('track from ', { ip, values });
-
     // sessions
-    let session = await db
-      .from('sessions')
-      .select()
-      .eq('ip', ip)
-      .eq('website_id', params.id)
-      .eq('ua', data?.data.ua)
-      .single();
-
-    if (!session.data) {
-      session = await db
-        .from('sessions')
-        .insert({
-          ip: ip,
-          ua: data?.data?.ua,
-          website_id: params.id,
-          os: os,
-          device: getDeviceType(data?.data?.sw, os || 'Other'),
-          browser: browser,
-          screen: data?.data?.sw,
-          lang: data?.data?.loc
-        })
-        .select()
-        .single();
-    }
+    const session = await db.rpc('get_session', {
+      p_ip: ip || '',
+      p_website_id: params.id!,
+      p_ua: data?.data?.ua,
+      p_browser: browser || 'Unknown',
+      p_device: getDeviceType(data?.data?.sw, os || 'Other'),
+      p_os: os || 'Unknown',
+      p_screen: data?.data?.sw,
+      p_lang: data?.data?.loc
+    });
+    session_id = session.data?.id;
 
     // insert events
     await db
@@ -76,7 +61,7 @@ export const POST = (async ({ url, params, request, locals: { db } }) => {
   } catch (e) {
     console.log('error receiveing track data');
   }
-  return new Response(JSON.stringify({ ok: '😜' }), {
+  return new Response(JSON.stringify({ ok: '😜', session: session_id }), {
     status: 201,
     headers: {
       ...corsHeaders,
