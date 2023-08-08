@@ -42,6 +42,7 @@
     "@supabase/auth-ui-shared": "^0.1.6",
     "@supabase/auth-ui-svelte": "^0.2.2",
     "@supabase/supabase-js": "^2.31.0",
+    "detect-browser": "^5.3.0",
     "three": "^0.155.0"
   }
 }

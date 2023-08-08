@@ -1,4 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
+import { browserName, detectOS } from 'detect-browser';
 
 const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -15,6 +16,11 @@ const getIp = (headers: Headers) => {
   return null;
 };
 
+const getDeviceType = (width: number, os: string) => {
+  // TODO: get device type
+  return 'desktop';
+};
+
 export const POST = (async ({ url, params, request, locals: { db } }) => {
   try {
     const data = await request.json();
@@ -23,6 +29,10 @@ export const POST = (async ({ url, params, request, locals: { db } }) => {
       ...data,
       website_id: params.id
     };
+
+    const ua = request.headers.get('user-agent') ?? data?.data?.ua;
+    const browser = browserName(ua);
+    const os = detectOS(ua);
 
     const ip = getIp(request.headers);
 
@@ -42,13 +52,13 @@ export const POST = (async ({ url, params, request, locals: { db } }) => {
         .from('sessions')
         .insert({
           ip: ip,
-          ua: data.ua,
+          ua: data?.data?.ua,
           website_id: params.id,
-          os: null, // TODO: detect os, device, browser
-          device: null,
-          browser: null,
-          screen: data.sw,
-          lang: data.loc
+          os: os,
+          device: getDeviceType(data?.data?.sw, os || 'Other'),
+          browser: browser,
+          screen: data?.data?.sw,
+          lang: data?.data?.loc
         })
         .select()
         .single();
