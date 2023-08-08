@@ -9,12 +9,59 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      sessions: {
+        Row: {
+          browser: string | null
+          created_at: string | null
+          device: string | null
+          id: string
+          ip: string | null
+          lang: string | null
+          os: string | null
+          screen: number | null
+          ua: string | null
+          website_id: string | null
+        }
+        Insert: {
+          browser?: string | null
+          created_at?: string | null
+          device?: string | null
+          id?: string
+          ip?: string | null
+          lang?: string | null
+          os?: string | null
+          screen?: number | null
+          ua?: string | null
+          website_id?: string | null
+        }
+        Update: {
+          browser?: string | null
+          created_at?: string | null
+          device?: string | null
+          id?: string
+          ip?: string | null
+          lang?: string | null
+          os?: string | null
+          screen?: number | null
+          ua?: string | null
+          website_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_website_id_fkey"
+            columns: ["website_id"]
+            referencedRelation: "websites"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       website_events: {
         Row: {
           created_at: string
           data: Json | null
           event_name: string | null
           id: string
+          session_id: string | null
           website_id: string | null
         }
         Insert: {
@@ -22,6 +69,7 @@ export interface Database {
           data?: Json | null
           event_name?: string | null
           id?: string
+          session_id?: string | null
           website_id?: string | null
         }
         Update: {
@@ -29,9 +77,16 @@ export interface Database {
           data?: Json | null
           event_name?: string | null
           id?: string
+          session_id?: string | null
           website_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "website_events_session_id_fkey"
+            columns: ["session_id"]
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "website_events_website_id_fkey"
             columns: ["website_id"]
@@ -103,7 +158,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      roles: "owner" | "admin" | "member"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
