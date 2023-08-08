@@ -44,7 +44,7 @@ export const POST = (async ({ url, params, request, locals: { db } }) => {
       .select()
       .eq('ip', ip)
       .eq('website_id', params.id)
-      .eq('ua', data.ua)
+      .eq('ua', data?.data.ua)
       .single();
 
     if (!session.data) {
