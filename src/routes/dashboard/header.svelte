@@ -1,9 +1,19 @@
+<script lang="ts">
+  import ThemeToggler from '$lib/components/ThemeToggler.svelte';
+  import Icon from '@iconify/svelte';
+</script>
+
 <header class="">
-  <div class="m-auto flex w-full max-w-6xl items-center justify-between">
-    <a href="/" class="py-2 text-xl font-medium text-green-500"><h1>Supalytic</h1></a>
-    <div id="header-nav" class="flex flex-shrink-0 items-center gap-2 py-2 text-sm font-medium">
-      <a href="/dashboard">Dashboard</a>
-      <a href="/dashboard/settings">Settings</a>
+  <div class="container flex items-center justify-between py-8">
+    <a href="/dashboard" class="flex items-center space-x-2 text-xl font-semibold text-primary-500">
+      <span>Supalytic</span>
+      <span class="text-base font-normal text-gray-400">Dashboard</span>
+    </a>
+    <div id="header-nav" class="flex flex-shrink-0 items-center gap-4 text-sm font-medium">
+      <ThemeToggler />
+      <a href="/dashboard/settings">
+        <Icon icon="akar-icons:gear" width={20} height={20} />
+      </a>
     </div>
   </div>
 </header>

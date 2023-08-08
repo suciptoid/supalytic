@@ -156,7 +156,7 @@
             <input
               type="text"
               placeholder="email"
-              class="rounded-global border border-gray-500/30 bg-gray-500/10 px-4 py-2"
+              class="w-full rounded-global border border-gray-500/30 bg-gray-500/10 px-4 py-2"
             />
             <Button primary>Subscribe</Button>
           </div>

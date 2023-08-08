@@ -49,13 +49,19 @@
 <p class="mb-4 text-lg font-semibold">Domain name</p>
 
 <div class="">
-  <select name="" id="" class="rounded-global border border-gray-300 px-4 py-2">
+  <select
+    name=""
+    id=""
+    class="rounded-md border border-gray-500/20 px-3 py-2 placeholder:text-gray-500/50 dark:bg-gray-500/10"
+  >
     <option value="">Today</option>
     <option value="">Yesterday</option>
   </select>
 </div>
 
-<canvas id="chart" />
+<div class="h-[400px]">
+  <canvas id="chart" />
+</div>
 
 <div>hello page</div>
-<code>{JSON.stringify(data.browsers)}</code>
+<code class="text-sm">{JSON.stringify(data.browsers)}</code>
