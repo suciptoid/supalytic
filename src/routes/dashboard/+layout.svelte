@@ -1,13 +1,15 @@
 <script>
-	import Header from './header.svelte';
+  import Header from './header.svelte';
 </script>
 
 <svelte:head>
-	<title>Supalytic | Dashboard</title>
+  <title>Supalytic | Dashboard</title>
 </svelte:head>
 
-<Header />
+<div class="dark:bg-black/90 dark:text-gray-400 min-h-screen font-dashsans">
+  <Header />
 
-<main class="m-auto w-full max-w-6xl">
-	<slot />
-</main>
+  <main class="container">
+    <slot />
+  </main>
+</div>
