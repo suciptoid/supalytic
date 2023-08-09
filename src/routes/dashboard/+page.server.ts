@@ -5,7 +5,7 @@ export const load = (async ({ url, locals: { getSession, db } }) => {
 
   const query = await db
     .from('websites')
-    .select('*,website_users(user_id,role)')
+    .select('*,website_users!inner(user_id,role)')
     .eq('website_users.user_id', session!.user.id);
 
   const websites = query.data;
