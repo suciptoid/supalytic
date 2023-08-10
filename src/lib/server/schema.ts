@@ -12,6 +12,7 @@ export interface Database {
       sessions: {
         Row: {
           browser: string | null
+          country: string | null
           created_at: string | null
           device: string | null
           id: string
@@ -23,6 +24,7 @@ export interface Database {
         }
         Insert: {
           browser?: string | null
+          country?: string | null
           created_at?: string | null
           device?: string | null
           id?: string
@@ -34,6 +36,7 @@ export interface Database {
         }
         Update: {
           browser?: string | null
+          country?: string | null
           created_at?: string | null
           device?: string | null
           id?: string
@@ -225,29 +228,56 @@ export interface Database {
           timeframe: string
         }[]
       }
-      get_session: {
-        Args: {
-          p_ip: string
-          p_website_id: string
-          p_ua: string
-          p_browser?: string
-          p_device?: string
-          p_os?: string
-          p_screen?: number
-          p_lang?: string
-        }
-        Returns: {
-          browser: string | null
-          created_at: string | null
-          device: string | null
-          id: string
-          lang: string | null
-          os: string | null
-          screen: number | null
-          ua: string | null
-          website_id: string | null
-        }
-      }
+      get_session:
+        | {
+            Args: {
+              p_ip: string
+              p_website_id: string
+              p_ua: string
+              p_browser?: string
+              p_device?: string
+              p_os?: string
+              p_screen?: number
+              p_lang?: string
+            }
+            Returns: {
+              browser: string | null
+              country: string | null
+              created_at: string | null
+              device: string | null
+              id: string
+              lang: string | null
+              os: string | null
+              screen: number | null
+              ua: string | null
+              website_id: string | null
+            }
+          }
+        | {
+            Args: {
+              p_ip: string
+              p_website_id: string
+              p_ua: string
+              p_browser?: string
+              p_device?: string
+              p_os?: string
+              p_screen?: number
+              p_lang?: string
+              p_country?: string
+            }
+            Returns: {
+              browser: string | null
+              country: string | null
+              created_at: string | null
+              device: string | null
+              id: string
+              lang: string | null
+              os: string | null
+              screen: number | null
+              ua: string | null
+              website_id: string | null
+            }
+          }
     }
     Enums: {
       [_ in never]: never

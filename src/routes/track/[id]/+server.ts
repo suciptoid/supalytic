@@ -21,6 +21,13 @@ const getDeviceType = (width: number, os: string) => {
   return 'desktop';
 };
 
+const getCountry = (headers: Headers) => {
+  if (headers.has('cf-ipcountry')) {
+    return headers.get('cf-ipcountry');
+  }
+  return null;
+};
+
 export const POST = (async ({ url, params, request, locals: { db } }) => {
   let session_id = null;
   try {
@@ -36,6 +43,8 @@ export const POST = (async ({ url, params, request, locals: { db } }) => {
 
     const ip = getIp(request.headers);
 
+    const cc = getCountry(request.headers);
+
     // sessions
     const session = await db.rpc('get_session', {
       p_ip: ip || '',
@@ -45,7 +54,8 @@ export const POST = (async ({ url, params, request, locals: { db } }) => {
       p_device: getDeviceType(data?.data?.sw, os || 'Other'),
       p_os: os || 'Unknown',
       p_screen: data?.data?.sw,
-      p_lang: data?.data?.loc
+      p_lang: data?.data?.loc,
+      p_country: cc ?? undefined
     });
     session_id = session.data?.id;
 
