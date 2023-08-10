@@ -17,8 +17,14 @@ const getIp = (headers: Headers) => {
 };
 
 const getDeviceType = (width: number, os: string) => {
-  // TODO: get device type
-  return 'desktop';
+  // TODO: get device type based on browser
+  if (width < 768) {
+    return 'mobile';
+  } else if (width < 992) {
+    return 'tablet';
+  } else {
+    return 'desktop';
+  }
 };
 
 const getCountry = (headers: Headers) => {
@@ -40,9 +46,7 @@ export const POST = (async ({ url, params, request, locals: { db } }) => {
     const ua = request.headers.get('user-agent') ?? data?.data?.ua;
     const browser = browserName(ua);
     const os = detectOS(ua);
-
     const ip = getIp(request.headers);
-
     const cc = getCountry(request.headers);
 
     // sessions

@@ -62,7 +62,7 @@ export interface Database {
           {
             foreignKeyName: "sessions_website_id_fkey"
             columns: ["website_id"]
-            referencedRelation: "website_stats"
+            referencedRelation: "website_stats_hourly"
             referencedColumns: ["website_id"]
           }
         ]
@@ -114,7 +114,7 @@ export interface Database {
           {
             foreignKeyName: "website_events_website_id_fkey"
             columns: ["website_id"]
-            referencedRelation: "website_stats"
+            referencedRelation: "website_stats_hourly"
             referencedColumns: ["website_id"]
           }
         ]
@@ -160,7 +160,7 @@ export interface Database {
           {
             foreignKeyName: "website_users_website_id_fkey"
             columns: ["website_id"]
-            referencedRelation: "website_stats"
+            referencedRelation: "website_stats_hourly"
             referencedColumns: ["website_id"]
           }
         ]
@@ -204,7 +204,7 @@ export interface Database {
         }
         Relationships: []
       }
-      website_stats: {
+      website_stats_hourly: {
         Row: {
           hour: string | null
           page_views: number | null

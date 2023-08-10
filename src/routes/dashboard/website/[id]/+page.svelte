@@ -19,7 +19,7 @@
   };
 
   onMount(() => {
-    const chartData = data.browsers || [];
+    const chartData = data.stats || [];
     const ctx = document.getElementById('chart') as HTMLCanvasElement | null;
 
     if (!ctx) return;
@@ -27,15 +27,20 @@
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: chartData.map((row) => formatTimeFrame(row.timeframe)),
+        labels: chartData.map((row) => formatTimeFrame(row.hour!)),
         datasets: [
           {
             label: 'Page views',
-            data: chartData.map((row) => row.count)
+            data: chartData.map((row) => row.page_views)
+          },
+          {
+            label: 'Unique visitors',
+            data: chartData.map((row) => row.unique_visitors)
           }
         ]
       },
       options: {
+        responsive: true,
         scales: {
           x: {
             grid: { display: false }
@@ -46,7 +51,7 @@
   });
 </script>
 
-<p class="mb-4 text-lg font-semibold">Domain name</p>
+<p class="mb-4 text-lg font-semibold">{data.website.domain}</p>
 
 <div class="">
   <select
@@ -59,9 +64,9 @@
   </select>
 </div>
 
-<div class="h-[400px]">
-  <canvas id="chart" />
+<div class="relative h-[400px] w-full">
+  <canvas id="chart" class="w-full" />
 </div>
 
-<div>hello page</div>
-<code class="text-sm">{JSON.stringify(data.browsers)}</code>
+<!-- <div>hello page</div> -->
+<!-- <code class="text-sm">{JSON.stringify(data.stats)}</code> -->
