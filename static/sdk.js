@@ -98,7 +98,7 @@
   if (history.pushState) {
     var originalFn = history['pushState'];
     history.pushState = function () {
-      ref = window.location.href;
+      // ref = window.location.href;
       originalFn.apply(this, arguments);
 
       if (ref != window.location.href) {
