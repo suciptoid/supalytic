@@ -28,7 +28,9 @@
   <a
     id="add-website"
     href="/dashboard/add"
-    class="h-[90px] flex items-center justify-center rounded-md border-2 border-dashed border-gray-500/20 dark:bg-gray-600/10 p-6 transition hover:border-gray-500/40 hover:bg-gray-400/10 dark:hover:bg-gray-400/10 text-center text-sm font-medium text-gray-600"
-    >Add Website</a
+    class="h-[90px] flex items-center justify-center rounded-md border border-dashed border-gray-500/20 dark:bg-gray-600/10 p-6 transition hover:border-gray-500/40 hover:bg-gray-400/10 dark:hover:bg-gray-400/10 text-center text-sm font-medium text-gray-600"
+    >
+    <Icon icon="mdi:add" width={16} height={16} />
+    Add Website</a
   >
 </div>
