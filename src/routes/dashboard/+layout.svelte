@@ -6,10 +6,14 @@
   <title>Supalytic | Dashboard</title>
 </svelte:head>
 
-<div class="dark:bg-black/90 dark:text-gray-400 min-h-screen font-dashsans">
+<div class="min-h-screen font-dashsans text-gray-700 dark:bg-black/90 dark:text-gray-400">
   <Header />
 
-  <main class="container">
+  <main class="container min-h-[calc(100vh-200px)]">
     <slot />
   </main>
+
+  <div class="container py-9">
+    <p class="text-sm font-semibold">Supalytic</p>
+  </div>
 </div>
