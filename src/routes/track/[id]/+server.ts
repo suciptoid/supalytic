@@ -50,7 +50,7 @@ export const POST = (async ({ url, params, request, locals: { db } }) => {
     const cc = getCountry(request.headers);
 
     // sessions
-    const session = await db.rpc('get_session', {
+    db.rpc('get_session', {
       p_ip: ip || '',
       p_website_id: params.id!,
       p_ua: data?.data?.ua,
@@ -60,22 +60,28 @@ export const POST = (async ({ url, params, request, locals: { db } }) => {
       p_screen: data?.data?.sw,
       p_lang: data?.data?.loc,
       p_country: cc ?? undefined
-    });
-    session_id = session.data?.id;
+    }).then((res) => {
+      session_id = res.data?.id;
 
-    // insert events
-    await db
-      .from('website_events')
-      .insert({
-        ...values,
-        session_id: session.data?.id
-      })
-      .select()
-      .single();
+      if (res.error) {
+        console.warn('error getting session', res.error);
+      }
+      // insert events
+      db.from('website_events')
+        .insert({
+          ...values,
+          session_id: session_id
+        })
+        .then((r) => {
+          if (r.error) {
+            console.warn('error inserting event', r.error);
+          }
+        });
+    });
   } catch (e) {
     console.log('error receiveing track data');
   }
-  return new Response(JSON.stringify({ ok: '😜', session: session_id }), {
+  return new Response(JSON.stringify({ message: 'ok' }), {
     status: 201,
     headers: {
       ...corsHeaders,

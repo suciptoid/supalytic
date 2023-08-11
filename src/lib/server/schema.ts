@@ -56,6 +56,12 @@ export interface Database {
           {
             foreignKeyName: "sessions_website_id_fkey"
             columns: ["website_id"]
+            referencedRelation: "metrics_pageview"
+            referencedColumns: ["website_id"]
+          },
+          {
+            foreignKeyName: "sessions_website_id_fkey"
+            columns: ["website_id"]
             referencedRelation: "website_metrics"
             referencedColumns: ["website_id"]
           },
@@ -100,10 +106,22 @@ export interface Database {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "website_events_session_id_fkey"
+            columns: ["session_id"]
+            referencedRelation: "metrics_pageview"
+            referencedColumns: ["session_id"]
+          },
+          {
             foreignKeyName: "website_events_website_id_fkey"
             columns: ["website_id"]
             referencedRelation: "websites"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "website_events_website_id_fkey"
+            columns: ["website_id"]
+            referencedRelation: "metrics_pageview"
+            referencedColumns: ["website_id"]
           },
           {
             foreignKeyName: "website_events_website_id_fkey"
@@ -154,6 +172,12 @@ export interface Database {
           {
             foreignKeyName: "website_users_website_id_fkey"
             columns: ["website_id"]
+            referencedRelation: "metrics_pageview"
+            referencedColumns: ["website_id"]
+          },
+          {
+            foreignKeyName: "website_users_website_id_fkey"
+            columns: ["website_id"]
             referencedRelation: "website_metrics"
             referencedColumns: ["website_id"]
           },
@@ -188,6 +212,23 @@ export interface Database {
       }
     }
     Views: {
+      metrics_pageview: {
+        Row: {
+          browser: string | null
+          device: string | null
+          event_count: number | null
+          event_name: string | null
+          hour: string | null
+          os: string | null
+          path: string | null
+          referer: string | null
+          screen: number | null
+          session_id: string | null
+          website_domain: string | null
+          website_id: string | null
+        }
+        Relationships: []
+      }
       website_metrics: {
         Row: {
           browser: string | null
@@ -199,6 +240,7 @@ export interface Database {
           path: string | null
           referer: string | null
           screen: number | null
+          unique_visitor: number | null
           website_domain: string | null
           website_id: string | null
         }
@@ -215,6 +257,36 @@ export interface Database {
       }
     }
     Functions: {
+      calculate_metrics: {
+        Args: {
+          website_id: string
+          start_time: string
+          end_time: string
+          filters: Json
+        }
+        Returns: {
+          metrics: string
+          name: string
+          unique_visitor: number
+          page_view: number
+          time_interval: string
+        }[]
+      }
+      calculate_metrics_copy: {
+        Args: {
+          website_id: string
+          start_time: string
+          end_time: string
+          filters: Json
+        }
+        Returns: {
+          metrics: string
+          name: string
+          unique_visitor: number
+          page_view: number
+          time_interval: string
+        }[]
+      }
       get_metrics: {
         Args: {
           website_id: string
@@ -228,56 +300,31 @@ export interface Database {
           timeframe: string
         }[]
       }
-      get_session:
-        | {
-            Args: {
-              p_ip: string
-              p_website_id: string
-              p_ua: string
-              p_browser?: string
-              p_device?: string
-              p_os?: string
-              p_screen?: number
-              p_lang?: string
-            }
-            Returns: {
-              browser: string | null
-              country: string | null
-              created_at: string | null
-              device: string | null
-              id: string
-              lang: string | null
-              os: string | null
-              screen: number | null
-              ua: string | null
-              website_id: string | null
-            }
-          }
-        | {
-            Args: {
-              p_ip: string
-              p_website_id: string
-              p_ua: string
-              p_browser?: string
-              p_device?: string
-              p_os?: string
-              p_screen?: number
-              p_lang?: string
-              p_country?: string
-            }
-            Returns: {
-              browser: string | null
-              country: string | null
-              created_at: string | null
-              device: string | null
-              id: string
-              lang: string | null
-              os: string | null
-              screen: number | null
-              ua: string | null
-              website_id: string | null
-            }
-          }
+      get_session: {
+        Args: {
+          p_ip: string
+          p_website_id: string
+          p_ua: string
+          p_browser?: string
+          p_device?: string
+          p_os?: string
+          p_screen?: number
+          p_lang?: string
+          p_country?: string
+        }
+        Returns: {
+          browser: string | null
+          country: string | null
+          created_at: string | null
+          device: string | null
+          id: string
+          lang: string | null
+          os: string | null
+          screen: number | null
+          ua: string | null
+          website_id: string | null
+        }
+      }
     }
     Enums: {
       [_ in never]: never

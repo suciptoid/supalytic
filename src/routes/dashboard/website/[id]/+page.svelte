@@ -23,7 +23,7 @@
     const start = new Date(dateStart).toISOString().split('T')[0].toString();
     const dateEnd = today;
     const end = new Date(dateEnd).toISOString().split('T')[0].toString();
-    const urlparams = new URLSearchParams({ start, end });
+    const urlparams = new URLSearchParams({ start: data.start, end: data.end });
     goto(`/dashboard/website/${$page.params.id}?${urlparams}`);
   };
 
@@ -44,7 +44,7 @@
   // - rerender chart on datachange
   // - format date x axes and tooltip
   onMount(() => {
-    const chartData = data.stats || [];
+    const chartData = data.all || [];
     const ctx = document.getElementById('chart') as HTMLCanvasElement | null;
 
     if (!ctx) return;
@@ -52,20 +52,21 @@
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: chartData.map((row) => formatTimeFrame(row.hour!)),
+        labels: chartData.map((row) => formatTimeFrame(row.time_interval!)),
         datasets: [
           {
             label: 'Page views',
-            data: chartData.map((row) => row.page_views)
+            data: chartData.map((row) => row.page_view)
           },
           {
             label: 'Unique visitors',
-            data: chartData.map((row) => row.unique_visitors)
+            data: chartData.map((row) => row.unique_visitor)
           }
         ]
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           x: {
             grid: { display: false }
@@ -76,15 +77,15 @@
   });
 </script>
 
-<p class="mb-4 text-lg font-semibold">{data.website.domain}</p>
+<p class="mb-4 px-2 text-lg font-semibold">{data.website.domain}</p>
 
 <div class="flex justify-between">
-  <div class="mb-4 flex space-x-8">
-    <div class="p-2">
-      <p class="text-3xl font-semibold text-black dark:text-white">3281</p>
+  <div class="mb-4 flex space-x-4">
+    <div class="rounded p-2 px-6">
+      <p class="text-3xl font-semibold text-black dark:text-white">{data.pageview_count ?? 0}</p>
       <p class="font-medium">Views</p>
     </div>
-    <div class="p-2">
+    <div class="p-2 px-6">
       <p class="text-3xl font-semibold text-black dark:text-white">500</p>
       <p class="font-medium">Visitors</p>
     </div>
@@ -113,30 +114,13 @@
       <div class="flex-1">Pages</div>
       <div class="basis-1/5 text-right">Views</div>
     </div>
-    <div class="flex py-1">
-      <div class="flex-1">/</div>
-      <div class="basis-1/5 text-right">300</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex-1">/dashboard</div>
-      <div class="basis-1/5 text-right">200</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex-1">/docs</div>
-      <div class="basis-1/5 text-right">100</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex-1">/pricing</div>
-      <div class="basis-1/5 text-right">50</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex-1">/help</div>
-      <div class="basis-1/5 text-right">10</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex-1">/foo/bar</div>
-      <div class="basis-1/5 text-right">10</div>
-    </div>
+
+    {#each data.url as url}
+      <div class="flex py-1">
+        <div class="flex-1 truncate">{url.name}</div>
+        <div class="flex-shrink-0 basis-1/5 text-right">{url.page_view}</div>
+      </div>
+    {/each}
   </div>
 
   <div class="flex flex-col p-2">
@@ -144,26 +128,12 @@
       <div class="flex-1">Referrers</div>
       <div class="basis-1/5 text-right">Views</div>
     </div>
-    <div class="flex py-1">
-      <div class="flex-1">None</div>
-      <div class="basis-1/5 text-right">300</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex-1">google.com</div>
-      <div class="basis-1/5 text-right">200</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex-1">github.com</div>
-      <div class="basis-1/5 text-right">100</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex-1">twitter.com</div>
-      <div class="basis-1/5 text-right">50</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex-1">reddit.com</div>
-      <div class="basis-1/5 text-right">10</div>
-    </div>
+    {#each data.referer as row}
+      <div class="flex py-1">
+        <div class="flex-1 truncate">{row.name}</div>
+        <div class="flex-shrink-0 basis-1/5 text-right">{row.page_view}</div>
+      </div>
+    {/each}
   </div>
 </div>
 
@@ -171,36 +141,17 @@
   <div class="flex flex-col p-2">
     <div class="flex py-1 font-semibold dark:text-white">
       <div class="flex-1">Browsers</div>
-      <div class="basis-1/5 text-right">Visitors</div>
+      <div class="basis-1/5 text-right">Views</div>
     </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="logos:chrome" />
-        <p>Chrome</p>
+    {#each data.browsers as row}
+      <div class="flex py-1">
+        <div class="flex flex-1 items-center space-x-2">
+          <Icon icon="logos:chrome" />
+          <p class="truncate">{row.name}</p>
+        </div>
+        <div class="flex-shrink-0 basis-1/5 text-right">{row.page_view}</div>
       </div>
-      <div class="basis-1/5 text-right">300</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="logos:firefox" />
-        <p>Firefox</p>
-      </div>
-      <div class="basis-1/5 text-right">200</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="logos:safari" />
-        <p>Safari</p>
-      </div>
-      <div class="basis-1/5 text-right">100</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="logos:opera" />
-        <p>Opera</p>
-      </div>
-      <div class="basis-1/5 text-right">50</div>
-    </div>
+    {/each}
   </div>
 
   <div class="flex flex-col p-2">
@@ -208,34 +159,15 @@
       <div class="flex-1">Operating System</div>
       <div class="basis-1/5 text-right">Visitors</div>
     </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="logos:microsoft-windows-icon" />
-        <p>Windows</p>
+    {#each data.os as row}
+      <div class="flex py-1">
+        <div class="flex flex-1 items-center space-x-2">
+          <Icon icon="logos:microsoft-windows-icon" />
+          <p>{row.name}</p>
+        </div>
+        <div class="basis-1/5 text-right">{row.page_view}</div>
       </div>
-      <div class="basis-1/5 text-right">300</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="logos:apple" />
-        <p>Mac OS</p>
-      </div>
-      <div class="basis-1/5 text-right">200</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="logos:linux-tux" />
-        <p>Linux</p>
-      </div>
-      <div class="basis-1/5 text-right">100</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="logos:android-icon" />
-        <p>Android</p>
-      </div>
-      <div class="basis-1/5 text-right">50</div>
-    </div>
+    {/each}
   </div>
 
   <div class="flex flex-col p-2">
@@ -243,34 +175,15 @@
       <div class="flex-1">Devices</div>
       <div class="basis-1/5 text-right">Visitors</div>
     </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="twemoji:desktop-computer" />
-        <p>Desktop</p>
+    {#each data.devices as row}
+      <div class="flex py-1">
+        <div class="flex flex-1 items-center space-x-2">
+          <Icon icon="twemoji:desktop-computer" />
+          <p>{row.name}</p>
+        </div>
+        <div class="basis-1/5 text-right">{row.page_view}</div>
       </div>
-      <div class="basis-1/5 text-right">300</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="twemoji:laptop" />
-        <p>Laptop</p>
-      </div>
-      <div class="basis-1/5 text-right">200</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="twemoji:mobile-phone" />
-        <p>Mobile</p>
-      </div>
-      <div class="basis-1/5 text-right">100</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="twemoji:mobile-phone" />
-        <p>Tablet</p>
-      </div>
-      <div class="basis-1/5 text-right">50</div>
-    </div>
+    {/each}
   </div>
 </div>
 
@@ -280,34 +193,15 @@
       <div class="flex-1">Countries</div>
       <div class="basis-1/5 text-right">Visitors</div>
     </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="twemoji:flag-united-states" />
-        <p>United States</p>
+    {#each data.countries as row}
+      <div class="flex py-1">
+        <div class="flex flex-1 items-center space-x-2">
+          <Icon icon="twemoji:flag-united-states" />
+          <p>{row.name}</p>
+        </div>
+        <div class="basis-1/5 text-right">{row.page_view}</div>
       </div>
-      <div class="basis-1/5 text-right">300</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="twemoji:flag-germany" />
-        <p>Germany</p>
-      </div>
-      <div class="basis-1/5 text-right">200</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="twemoji:flag-netherlands" />
-        <p>Netherlands</p>
-      </div>
-      <div class="basis-1/5 text-right">100</div>
-    </div>
-    <div class="flex py-1">
-      <div class="flex flex-1 items-center space-x-2">
-        <Icon icon="twemoji:flag-china" />
-        <p>China</p>
-      </div>
-      <div class="basis-1/5 text-right">50</div>
-    </div>
+    {/each}
   </div>
 </div>
 
