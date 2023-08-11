@@ -272,21 +272,6 @@ export interface Database {
           time_interval: string
         }[]
       }
-      calculate_metrics_copy: {
-        Args: {
-          website_id: string
-          start_time: string
-          end_time: string
-          filters: Json
-        }
-        Returns: {
-          metrics: string
-          name: string
-          unique_visitor: number
-          page_view: number
-          time_interval: string
-        }[]
-      }
       get_metrics: {
         Args: {
           website_id: string
