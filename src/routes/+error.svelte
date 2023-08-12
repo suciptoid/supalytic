@@ -5,7 +5,7 @@
 <svelte:head>
   <title>Error {$page.status} | Supalytic</title>
 </svelte:head>
-<div class="flex min-h-screen w-full flex-col items-center justify-center dark:bg-slate-800">
+<div class="flex min-h-screen w-full flex-col items-center justify-center dark:bg-gray-500/10">
   <div class="p-10 text-center">
     <h1 class="text-4xl font-extrabold text-gray-400">{$page.status}</h1>
     <p class="text-gray-500">{$page.error?.message}</p>

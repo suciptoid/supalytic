@@ -5,7 +5,7 @@
   let showSettings = false;
 </script>
 
-<header class="bg-white shadow-sm dark:bg-slate-800">
+<header class="bg-white shadow-sm dark:bg-gray-500/10 mb-4">
   <div class="container flex items-center justify-between py-8">
     <a href="/dashboard" class="flex items-center space-x-2 text-xl font-semibold text-primary-500">
       <span>Supalytic</span>
