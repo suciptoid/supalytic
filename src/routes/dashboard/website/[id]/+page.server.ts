@@ -38,9 +38,11 @@ export const load = (async ({ url, params, locals: { db, getSession } }) => {
   // page view count
   const all = metrics?.filter((f) => f.metrics == 'all') ?? [];
   const pageview_count = all.reduce((count, item) => count + item.page_view, 0);
+  const visitor_count = all.reduce((count, item) => count + item.unique_visitor, 0);
 
   return {
     pageview_count,
+    visitor_count,
     website,
     start,
     end,
