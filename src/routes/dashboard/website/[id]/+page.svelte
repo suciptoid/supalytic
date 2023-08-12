@@ -67,10 +67,10 @@
       <div class="basis-1/5 text-right">Views</div>
     </div>
 
-    {#each data.url as url}
+    {#each data.pages as row}
       <div class="flex py-1">
-        <div class="flex-1 truncate">{url.name}</div>
-        <div class="flex-shrink-0 basis-1/5 text-right">{url.page_view}</div>
+        <div class="flex-1 truncate">{row.name}</div>
+        <div class="flex-shrink-0 basis-1/5 text-right">{row.page_view}</div>
       </div>
     {/each}
   </div>
