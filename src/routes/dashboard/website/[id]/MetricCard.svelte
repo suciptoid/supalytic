@@ -22,7 +22,7 @@
 </script>
 
 <div class="flex flex-col rounded-md bg-white px-6 py-4 dark:bg-gray-500/10">
-  <div class="flex py-1 font-semibold dark:text-white">
+  <div class="flex py-3 font-semibold dark:text-white">
     <div class="flex-1">{title}</div>
     <div class="basis-1/5 text-right">Views</div>
   </div>
