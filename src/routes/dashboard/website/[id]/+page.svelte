@@ -1,81 +1,32 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { Chart, registerables } from 'chart.js';
   import type { PageData } from './$types';
   import Icon from '@iconify/svelte';
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { browser } from '$app/environment';
   import { browserIcons, deviceIcons, osIcons } from '$lib/icons';
-
-  Chart.register(...registerables);
+  import Chart from './Chart.svelte';
+    import Tabs from './Tabs.svelte';
 
   export let data: PageData;
 
   let selectValue = 1; // days
 
   const handleSelectValueChanged = (days: number) => {
-    // if (days === 1) {
-    //   goto(`/dashboard/website/${$page.params.id}`);
-    //   return;
-    // }
+    if (days === 1) {
+      goto(`/dashboard/website/${$page.params.id}`);
+      return;
+    }
     const today = new Date();
     const dateStart = new Date().setDate(today.getDate() - days);
     const start = new Date(dateStart).toISOString().split('T')[0].toString();
     const dateEnd = today;
     const end = new Date(dateEnd).toISOString().split('T')[0].toString();
-    const urlparams = new URLSearchParams({ start: data.start, end: data.end });
+    const urlparams = new URLSearchParams({ start, end });
     goto(`/dashboard/website/${$page.params.id}?${urlparams}`);
   };
 
   $: if (browser) handleSelectValueChanged(selectValue);
-
-  const formatTimeFrame = (v: string) => {
-    const d = new Date(Date.parse(v));
-    const options: Intl.DateTimeFormatOptions = {
-      hourCycle: 'h24',
-      hour: '2-digit',
-      minute: '2-digit'
-    };
-    const formatted = new Intl.DateTimeFormat('en', options).format(d);
-    return formatted;
-  };
-
-  // todo:
-  // - rerender chart on datachange
-  // - format date x axes and tooltip
-  onMount(() => {
-    const chartData = data.all || [];
-    const ctx = document.getElementById('chart') as HTMLCanvasElement | null;
-
-    if (!ctx) return;
-
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: chartData.map((row) => formatTimeFrame(row.time_interval!)),
-        datasets: [
-          {
-            label: 'Page views',
-            data: chartData.map((row) => row.page_view)
-          },
-          {
-            label: 'Unique visitors',
-            data: chartData.map((row) => row.unique_visitor)
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            grid: { display: false }
-          }
-        }
-      }
-    });
-  });
 </script>
 
 <p class="mb-4 px-2 text-lg font-semibold">{data.website.domain}</p>
@@ -105,9 +56,7 @@
   </div>
 </div>
 
-<div class="relative mb-4 h-[400px] w-full">
-  <canvas id="chart" class="w-full" />
-</div>
+<Chart data={data.all} />
 
 <div class="mb-6 grid grid-cols-1 gap-8 text-sm md:grid-cols-2">
   <div class="flex flex-col p-2">
@@ -157,13 +106,13 @@
 
   <div class="flex flex-col p-2">
     <div class="flex py-1 font-semibold dark:text-white">
-      <div class="flex-1">Operating System</div>
+      <div class="flex-1">Operating Systems</div>
       <div class="basis-1/5 text-right">Visitors</div>
     </div>
     {#each data.os as row}
       <div class="flex py-1">
         <div class="flex flex-1 items-center space-x-2">
-          <Icon icon={osIcons[row.name]}/>
+          <Icon icon={osIcons[row.name]} />
           <p>{row.name}</p>
         </div>
         <div class="basis-1/5 text-right">{row.page_view}</div>
@@ -179,7 +128,7 @@
     {#each data.devices as row}
       <div class="flex py-1">
         <div class="flex flex-1 items-center space-x-2">
-          <Icon icon={deviceIcons[row.name]}/>
+          <Icon icon={deviceIcons[row.name]} />
           <p>{row.name}</p>
         </div>
         <div class="basis-1/5 text-right">{row.page_view}</div>
