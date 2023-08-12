@@ -49,8 +49,8 @@
             borderColor: '#22C55EAA',
             tension: 0.2,
             // borderRadius: 4,
-            borderWidth: 2,
-            fill: true
+            borderWidth: 2
+            // fill: true
           },
           {
             label: 'Page views',
@@ -60,7 +60,7 @@
             borderColor: '#1CA5F5AA',
             // tension: 0.2,
             borderRadius: 4,
-            borderWidth: 1,
+            borderWidth: 1
             // fill: true
           }
         ]
@@ -76,7 +76,7 @@
         scales: {
           x: {
             grid: { display: false },
-            ticks: { display: false },
+            ticks: { display: false }
             // stacked: true
           },
           y: {
