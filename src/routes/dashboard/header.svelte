@@ -21,7 +21,7 @@
             document.addEventListener('click', () => (showSettings = false));
           }}
         >
-          <Icon icon="akar-icons:gear" width={20} height={20} />
+          <Icon icon="mdi:user" width={20} height={20} />
         </a>
         <div
           class="absolute {showSettings

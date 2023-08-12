@@ -4,7 +4,7 @@
   export let data: PageData;
 </script>
 
-<h2 class="mb-4 text-base">Websites</h2>
+<h2 class="mb-4 font-medium">Websites</h2>
 
 <div id="website-lists" class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
   {#if data.websites}

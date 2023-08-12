@@ -6,7 +6,6 @@
   import { browser } from '$app/environment';
   import { browserIcons, deviceIcons, osIcons } from '$lib/icons';
   import Chart from './Chart.svelte';
-  import Tabs from './Tabs.svelte';
 
   export let data: PageData;
 
@@ -29,7 +28,6 @@
   $: if (browser) handleSelectValueChanged(selectValue);
 </script>
 
-<p class="mb-4 px-2 text-lg font-semibold">{data.website.domain}</p>
 
 <div class="flex justify-between">
   <div class="mb-4 flex space-x-4">
