@@ -7,7 +7,7 @@ export enum Browsers {
 export const browserIcons: Record<string, string> = {
   [Browsers.Chrome]: 'logos:chrome',
   [Browsers.Firefox]: 'logos:firefox',
-  [Browsers.Edge]: 'logos:edge'
+  [Browsers.Edge]: 'logos:microsoft-edge'
 };
 
 enum OS {
