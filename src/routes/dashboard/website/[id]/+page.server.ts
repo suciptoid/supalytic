@@ -36,9 +36,11 @@ export const load = (async ({ url, params, locals: { db, getSession } }) => {
   });
 
   // page view count
-  const all = metrics?.filter((f) => f.metrics == 'all') ?? [];
+  const all = metrics?.filter((f) => f.metrics == 'all' && f.name == 'hourly') ?? [];
+  const visitor = metrics?.filter((f) => f.metrics == 'all' && f.name == 'unique_visitor') ?? [];
+
   const pageview_count = all.reduce((count, item) => count + item.page_view, 0);
-  const visitor_count = all.reduce((count, item) => count + item.unique_visitor, 0);
+  const visitor_count = visitor.reduce((count, item) => count + item.unique_visitor, 0);
 
   return {
     pageview_count,
