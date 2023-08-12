@@ -1,11 +1,10 @@
 <script lang="ts">
   import type { PageData } from './$types';
-  import Icon from '@iconify/svelte';
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { browser } from '$app/environment';
-  import { browserIcons, deviceIcons, osIcons } from '$lib/icons';
   import Chart from './Chart.svelte';
+  import MetricCard from './MetricCard.svelte';
 
   export let data: PageData;
 
@@ -58,113 +57,19 @@
 </div>
 
 <div class="mb-6 grid grid-cols-1 gap-8 text-sm md:grid-cols-2">
-  <div class="flex flex-col rounded-md bg-white px-6 py-4 dark:bg-gray-500/10">
-    <div class="flex px-2 py-1 font-semibold dark:text-white">
-      <div class="flex-1">Pages</div>
-      <div class="basis-1/5 text-right">Views</div>
-    </div>
+  <MetricCard title="Pages" type="page" data={data.pages} />
 
-    <div class="scrollable h-[400px] overflow-y-scroll">
-      {#each data.pages as row}
-        <div class="flex px-2 py-1 transition hover:bg-gray-400/10">
-          <div class="flex-1 truncate">{row.name}</div>
-          <div class="flex-shrink-0 basis-1/5 text-right">{row.page_view}</div>
-        </div>
-      {/each}
-    </div>
-  </div>
-
-  <div class="flex flex-col rounded-md bg-white px-6 py-4 dark:bg-gray-500/10">
-    <div class="flex px-2 py-1 font-semibold dark:text-white">
-      <div class="flex-1">Referrers</div>
-      <div class="basis-1/5 text-right">Views</div>
-    </div>
-    <div class="scrollable h-[400px] overflow-y-scroll">
-      {#each data.referer as row}
-        <div class="flex px-2 py-1 transition hover:bg-gray-400/10">
-          <div class="flex-1 truncate">{row.name ?? 'None (Direct)'}</div>
-          <div class="flex-shrink-0 basis-1/5 text-right">{row.page_view}</div>
-        </div>
-      {/each}
-    </div>
-  </div>
+  <MetricCard title="Referrers" type="referer" data={data.referer} />
 </div>
 
 <div class="mb-6 grid grid-cols-1 gap-8 text-sm md:grid-cols-3">
-  <div class="flex flex-col rounded-md bg-white px-6 py-4 dark:bg-gray-500/10">
-    <div class="flex px-2 py-1 font-semibold dark:text-white">
-      <div class="flex-1">Browsers</div>
-      <div class="basis-1/5 text-right">Views</div>
-    </div>
-    <div class="scrollable h-[200px] overflow-y-scroll">
-      {#each data.browsers as row}
-        <div class="flex px-2 py-1 transition hover:bg-gray-400/10">
-          <div class="flex flex-1 items-center space-x-2">
-            <Icon icon={browserIcons[row.name]} />
-            <p class="truncate">{row.name}</p>
-          </div>
-          <div class="flex-shrink-0 basis-1/5 text-right">{row.page_view}</div>
-        </div>
-      {/each}
-    </div>
-  </div>
+  <MetricCard title="Browsers" type="browser" data={data.browsers} />
 
-  <div class="flex flex-col rounded-md bg-white px-6 py-4 dark:bg-gray-500/10">
-    <div class="flex px-2 py-1 font-semibold dark:text-white">
-      <div class="flex-1">Operating Systems</div>
-      <div class="basis-1/5 text-right">Visitors</div>
-    </div>
-    <div class="scrollable h-[200px] overflow-y-scroll">
-      {#each data.os as row}
-        <div class="flex px-2 py-1 transition hover:bg-gray-400/10">
-          <div class="flex flex-1 items-center space-x-2">
-            <Icon icon={osIcons[row.name]} />
-            <p>{row.name}</p>
-          </div>
-          <div class="basis-1/5 text-right">{row.page_view}</div>
-        </div>
-      {/each}
-    </div>
-  </div>
+  <MetricCard title="Operating System" type="os" data={data.os} />
 
-  <div class="flex flex-col rounded-md bg-white px-6 py-4 dark:bg-gray-500/10">
-    <div class="flex px-2 py-1 font-semibold dark:text-white">
-      <div class="flex-1">Devices</div>
-      <div class="basis-1/5 text-right">Visitors</div>
-    </div>
-    <div class="scrollable h-[200px] overflow-y-scroll">
-      {#each data.devices as row}
-        <div class="flex px-2 py-1 transition hover:bg-gray-400/10">
-          <div class="flex flex-1 items-center space-x-2">
-            <Icon icon={deviceIcons[row.name]} />
-            <p>{row.name}</p>
-          </div>
-          <div class="basis-1/5 text-right">{row.page_view}</div>
-        </div>
-      {/each}
-    </div>
-  </div>
+  <MetricCard title="Devices" type="device" data={data.devices} />
 </div>
 
 <div class="mb-6 grid grid-cols-1 gap-8 text-sm md:grid-cols-2">
-  <div class="flex flex-col rounded-md bg-white px-6 py-4 dark:bg-gray-500/10">
-    <div class="flex px-2 py-1 font-semibold dark:text-white">
-      <div class="flex-1">Countries</div>
-      <div class="basis-1/5 text-right">Visitors</div>
-    </div>
-    <div class="scrollable h-[200px] overflow-y-auto">
-      {#each data.countries as row}
-        <div class="flex px-2 py-1 transition hover:bg-gray-400/10">
-          <div class="flex flex-1 items-center space-x-2">
-            <Icon icon={`cif:${row.name?.toLowerCase()}`} />
-            <p>{row.name ?? 'Unknown'}</p>
-          </div>
-          <div class="basis-1/5 text-right">{row.page_view}</div>
-        </div>
-      {/each}
-    </div>
-  </div>
+  <MetricCard title="Countries" type="country" data={data.countries} />
 </div>
-
-<!-- <div>hello page</div> -->
-<!-- <code class="text-sm">{JSON.stringify(data.stats)}</code> -->
