@@ -6,6 +6,7 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { browser } from '$app/environment';
+  import { browserIcons, deviceIcons, osIcons } from '$lib/icons';
 
   Chart.register(...registerables);
 
@@ -86,7 +87,7 @@
       <p class="font-medium">Views</p>
     </div>
     <div class="p-2 px-6">
-      <p class="text-3xl font-semibold text-black dark:text-white">500</p>
+      <p class="text-3xl font-semibold text-black dark:text-white">{data.visitor_count ?? 0}</p>
       <p class="font-medium">Visitors</p>
     </div>
   </div>
@@ -130,7 +131,7 @@
     </div>
     {#each data.referer as row}
       <div class="flex py-1">
-        <div class="flex-1 truncate">{row.name}</div>
+        <div class="flex-1 truncate">{row.name ?? 'None (Direct)'}</div>
         <div class="flex-shrink-0 basis-1/5 text-right">{row.page_view}</div>
       </div>
     {/each}
@@ -146,7 +147,7 @@
     {#each data.browsers as row}
       <div class="flex py-1">
         <div class="flex flex-1 items-center space-x-2">
-          <Icon icon="logos:chrome" />
+          <Icon icon={browserIcons[row.name]} />
           <p class="truncate">{row.name}</p>
         </div>
         <div class="flex-shrink-0 basis-1/5 text-right">{row.page_view}</div>
@@ -162,7 +163,7 @@
     {#each data.os as row}
       <div class="flex py-1">
         <div class="flex flex-1 items-center space-x-2">
-          <Icon icon="logos:microsoft-windows-icon" />
+          <Icon icon={osIcons[row.name]}/>
           <p>{row.name}</p>
         </div>
         <div class="basis-1/5 text-right">{row.page_view}</div>
@@ -178,7 +179,7 @@
     {#each data.devices as row}
       <div class="flex py-1">
         <div class="flex flex-1 items-center space-x-2">
-          <Icon icon="twemoji:desktop-computer" />
+          <Icon icon={deviceIcons[row.name]}/>
           <p>{row.name}</p>
         </div>
         <div class="basis-1/5 text-right">{row.page_view}</div>
@@ -196,8 +197,8 @@
     {#each data.countries as row}
       <div class="flex py-1">
         <div class="flex flex-1 items-center space-x-2">
-          <Icon icon="twemoji:flag-united-states" />
-          <p>{row.name}</p>
+          <Icon icon={`cif:${row.name?.toLowerCase()}`} />
+          <p>{row.name ?? 'Unknown'}</p>
         </div>
         <div class="basis-1/5 text-right">{row.page_view}</div>
       </div>
