@@ -11,10 +11,10 @@
       (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
     ) {
       isDarkTheme = true;
-      document.documentElement.classList.add('dark');
+      // document.documentElement.classList.add('dark');
     } else {
       isDarkTheme = false;
-      document.documentElement.classList.remove('dark');
+      // document.documentElement.classList.remove('dark');
     }
   });
 
