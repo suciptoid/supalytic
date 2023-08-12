@@ -42,6 +42,20 @@ export const load = (async ({ url, params, locals: { db, getSession } }) => {
   const pageview_count = all.reduce((count, item) => count + item.page_view, 0);
   const visitor_count = visitor.reduce((count, item) => count + item.unique_visitor, 0);
 
+  // table metrics
+  type ArrElement<ArrType> = ArrType extends readonly (infer ElementType)[] ? ElementType : never;
+
+  type Metric = ArrElement<typeof metrics>;
+  const sortView = (a: Metric, b: Metric) => {
+    return b.page_view - a.page_view;
+  };
+  const browsers = (metrics?.filter((f) => f.metrics == 'browser') ?? []).sort(sortView);
+  const os = (metrics?.filter((f) => f.metrics == 'os') ?? []).sort(sortView);
+  const referer = (metrics?.filter((f) => f.metrics == 'referer') ?? []).sort(sortView);
+  const pages = (metrics?.filter((f) => f.metrics == 'url') ?? []).sort(sortView);
+  const devices = (metrics?.filter((f) => f.metrics == 'device') ?? []).sort(sortView);
+  const countries = (metrics?.filter((f) => f.metrics == 'country') ?? []).sort(sortView);
+
   return {
     pageview_count,
     visitor_count,
@@ -49,12 +63,11 @@ export const load = (async ({ url, params, locals: { db, getSession } }) => {
     start,
     end,
     all,
-    browsers: metrics?.filter((f) => f.metrics == 'browser') ?? [],
-    os: metrics?.filter((f) => f.metrics == 'os') ?? [],
-    path: metrics?.filter((f) => f.metrics == 'path') ?? [],
-    referer: metrics?.filter((f) => f.metrics == 'referer') ?? [],
-    url: metrics?.filter((f) => f.metrics == 'url') ?? [],
-    devices: metrics?.filter((f) => f.metrics == 'device') ?? [],
-    countries: metrics?.filter((f) => f.metrics == 'country') ?? []
+    browsers,
+    os,
+    referer,
+    pages,
+    devices,
+    countries
   };
 }) satisfies PageServerLoad;
