@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { day } from '$lib/day';
+import type { ArrayElement } from '$lib/utils';
 
 export const load = (async ({ url, params, locals: { db, getSession } }) => {
   const session = await getSession();
@@ -43,9 +44,7 @@ export const load = (async ({ url, params, locals: { db, getSession } }) => {
   const visitor_count = visitor.reduce((count, item) => count + item.unique_visitor, 0);
 
   // table metrics
-  type ArrElement<ArrType> = ArrType extends readonly (infer ElementType)[] ? ElementType : never;
-
-  type Metric = ArrElement<typeof metrics>;
+  type Metric = ArrayElement<typeof metrics>;
   const sortView = (a: Metric, b: Metric) => {
     return b.page_view - a.page_view;
   };
