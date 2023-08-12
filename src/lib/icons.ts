@@ -19,11 +19,11 @@ enum OS {
 }
 
 export const osIcons: Record<string, string> = {
-  [OS.Android]: 'logos:android',
+  [OS.Android]: 'flat-color-icons:android-os',
   [OS.MacOS]: 'logos:apple',
   [OS.Windows10]: 'logos:microsoft-windows-icon',
-  [OS.Linux]: 'logos:linux',
-  [OS.Unknown]: 'logos:linux'
+  [OS.Linux]: 'flat-color-icons:linux',
+  [OS.Unknown]: 'flat-color-icons:linux'
 };
 
 enum Devices {
@@ -34,6 +34,6 @@ enum Devices {
 
 export const deviceIcons: Record<string, string> = {
   [Devices.Dekstop]: 'twemoji:desktop-computer',
-  [Devices.Mobile]: 'twemoji:mobile-phone',
-  [Devices.Tablet]: 'twemoji:mobile-phone'
+  [Devices.Mobile]: 'flat-color-icons:phone-android',
+  [Devices.Tablet]: 'flat-color-icons:tablet-android'
 };
