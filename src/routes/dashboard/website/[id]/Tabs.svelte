@@ -1,12 +1,16 @@
 <script lang="ts">
+  import { page } from '$app/stores';
+
   type Tab = {
     label: string;
     path: string;
   };
+
+  const url = $page.url;
   const tabs: Tab[] = [
-    { label: 'Statistics', path: '/' },
-    { label: 'Setup', path: '/setup' },
-    { label: 'Settings', path: '/settings' }
+    { label: 'Statistics', path: `/dashboard/website/${$page.params.id}` },
+    { label: 'Setup', path: `/dashboard/website/${$page.params.id}/setup` },
+    { label: 'Settings', path: `/dashboard/website/${$page.params.id}/setting` }
   ];
 </script>
 

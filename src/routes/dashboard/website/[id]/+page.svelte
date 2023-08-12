@@ -6,7 +6,7 @@
   import { browser } from '$app/environment';
   import { browserIcons, deviceIcons, osIcons } from '$lib/icons';
   import Chart from './Chart.svelte';
-    import Tabs from './Tabs.svelte';
+  import Tabs from './Tabs.svelte';
 
   export let data: PageData;
 
@@ -56,10 +56,12 @@
   </div>
 </div>
 
-<Chart data={data.all} />
+<div class="my-4 rounded-md bg-white px-4 py-3 dark:bg-slate-800">
+  <Chart data={data.all} />
+</div>
 
 <div class="mb-6 grid grid-cols-1 gap-8 text-sm md:grid-cols-2">
-  <div class="flex flex-col p-2">
+  <div class="flex flex-col rounded-md bg-white px-6 py-4 dark:bg-slate-800">
     <div class="flex py-1 font-semibold dark:text-white">
       <div class="flex-1">Pages</div>
       <div class="basis-1/5 text-right">Views</div>
@@ -73,7 +75,7 @@
     {/each}
   </div>
 
-  <div class="flex flex-col p-2">
+  <div class="flex flex-col rounded-md bg-white px-6 py-4 dark:bg-slate-800">
     <div class="flex py-1 font-semibold dark:text-white">
       <div class="flex-1">Referrers</div>
       <div class="basis-1/5 text-right">Views</div>
@@ -88,7 +90,7 @@
 </div>
 
 <div class="mb-6 grid grid-cols-1 gap-8 text-sm md:grid-cols-3">
-  <div class="flex flex-col p-2">
+  <div class="flex flex-col rounded-md bg-white px-6 py-4 dark:bg-slate-800">
     <div class="flex py-1 font-semibold dark:text-white">
       <div class="flex-1">Browsers</div>
       <div class="basis-1/5 text-right">Views</div>
@@ -104,7 +106,7 @@
     {/each}
   </div>
 
-  <div class="flex flex-col p-2">
+  <div class="flex flex-col rounded-md bg-white px-6 py-4 dark:bg-slate-800">
     <div class="flex py-1 font-semibold dark:text-white">
       <div class="flex-1">Operating Systems</div>
       <div class="basis-1/5 text-right">Visitors</div>
@@ -120,7 +122,7 @@
     {/each}
   </div>
 
-  <div class="flex flex-col p-2">
+  <div class="flex flex-col rounded-md bg-white px-6 py-4 dark:bg-slate-800">
     <div class="flex py-1 font-semibold dark:text-white">
       <div class="flex-1">Devices</div>
       <div class="basis-1/5 text-right">Visitors</div>
@@ -138,7 +140,7 @@
 </div>
 
 <div class="mb-6 grid grid-cols-1 gap-8 text-sm md:grid-cols-2">
-  <div class="flex flex-col p-2">
+  <div class="flex flex-col rounded-md bg-white px-6 py-4 dark:bg-slate-800">
     <div class="flex py-1 font-semibold dark:text-white">
       <div class="flex-1">Countries</div>
       <div class="basis-1/5 text-right">Visitors</div>
