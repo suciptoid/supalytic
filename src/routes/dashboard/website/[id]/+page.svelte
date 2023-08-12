@@ -33,11 +33,11 @@
 
 <div class="flex justify-between">
   <div class="mb-4 flex space-x-4">
-    <div class="rounded p-2 px-6">
+    <div class="rounded-md bg-white px-6 py-4 dark:bg-gray-500/10">
       <p class="text-3xl font-semibold text-black dark:text-white">{data.pageview_count ?? 0}</p>
       <p class="font-medium">Views</p>
     </div>
-    <div class="p-2 px-6">
+    <div class="rounded-md bg-white px-6 py-4 dark:bg-gray-500/10">
       <p class="text-3xl font-semibold text-black dark:text-white">{data.visitor_count ?? 0}</p>
       <p class="font-medium">Visitors</p>
     </div>
