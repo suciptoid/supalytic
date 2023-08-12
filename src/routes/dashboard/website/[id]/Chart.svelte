@@ -13,11 +13,15 @@
 
   export let data: Metrics[];
 
-  let chart: Chart | null = null
+  let canvas: HTMLCanvasElement | null;
+  let chart: Chart | null = null;
 
   const formatTimeFrame = (v: string) => {
     const d = new Date(Date.parse(v));
     const options: Intl.DateTimeFormatOptions = {
+      // year: 'numeric',
+      month: 'short',
+      day: '2-digit',
       hourCycle: 'h24',
       hour: '2-digit',
       minute: '2-digit'
@@ -27,41 +31,68 @@
   };
 
   const createChart = () => {
-    if(chart) chart.destroy();
+    if (chart) chart.destroy();
     const chartData = data || [];
-    const ctx = document.getElementById('chart') as HTMLCanvasElement | null;
-    if (!ctx) return;
+    // console.log({ canvas });
+    if (!canvas) return;
 
-    chart = new Chart(ctx, {
-      type: 'bar',
+    chart = new Chart(canvas, {
+      type: 'line',
       data: {
         labels: chartData.map((row) => formatTimeFrame(row.time_interval)),
         datasets: [
           {
-            label: 'Page views',
-            data: chartData.map((row) => row.page_view)
+            label: 'Unique visitors',
+            type: 'line',
+            data: chartData.map((row) => row.unique_visitor),
+            backgroundColor: '#22C55E55',
+            borderColor: '#22C55EAA',
+            tension: 0.2,
+            // borderRadius: 4,
+            borderWidth: 2,
+            fill: true
           },
           {
-            label: 'Unique visitors',
-            data: chartData.map((row) => row.unique_visitor)
+            label: 'Page views',
+            type: 'bar',
+            data: chartData.map((row) => row.page_view),
+            backgroundColor: '#1CA5F544',
+            borderColor: '#1CA5F5AA',
+            // tension: 0.2,
+            borderRadius: 4,
+            borderWidth: 1,
+            // fill: true
           }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        interaction: {
+          mode: 'nearest',
+          axis: 'x',
+          intersect: false
+        },
         scales: {
           x: {
-            grid: { display: false }
+            grid: { display: false },
+            ticks: { display: false },
+            // stacked: true
+          },
+          y: {
+            beginAtZero: true,
+            grid: { display: false, drawTicks: false },
+            border: { display: false },
+            ticks: { display: false }
           }
         }
       }
     });
   };
 
-  $: if (browser && data) createChart();
+  $: if (browser && data && canvas) createChart();
 </script>
 
 <div class="relative mb-4 h-[400px] w-full">
-  <canvas id="chart" class="w-full" />
+  <canvas bind:this={canvas} class="w-full" />
 </div>
