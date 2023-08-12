@@ -16,6 +16,8 @@
     "@iconify/svelte": "^3.1.4",
     "@sveltejs/adapter-cloudflare": "^2.3.2",
     "@sveltejs/kit": "^1.20.4",
+    "@types/d3": "^7.4.0",
+    "@types/geojson": "^7946.0.10",
     "@types/pg": "^8.10.2",
     "@types/three": "^0.155.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
@@ -45,6 +47,7 @@
     "@supabase/auth-ui-svelte": "^0.2.2",
     "@supabase/supabase-js": "^2.31.0",
     "chart.js": "^4.3.3",
+    "d3": "^7.8.5",
     "dayjs": "^1.11.9",
     "detect-browser": "^5.3.0",
     "three": "^0.155.0"

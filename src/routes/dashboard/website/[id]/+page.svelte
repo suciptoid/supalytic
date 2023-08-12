@@ -5,6 +5,7 @@
   import { browser } from '$app/environment';
   import Chart from './Chart.svelte';
   import MetricCard from './MetricCard.svelte';
+  import WorldMap from './WorldMap.svelte';
 
   export let data: PageData;
 
@@ -72,4 +73,5 @@
 
 <div class="mb-6 grid grid-cols-1 gap-8 text-sm md:grid-cols-2">
   <MetricCard title="Countries" type="country" data={data.countries} />
+  <WorldMap />
 </div>
