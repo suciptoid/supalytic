@@ -128,6 +128,6 @@
   $: if (browser && data && canvas && group) createChart();
 </script>
 
-<div class="relative mb-4 h-[400px] w-full">
+<div class="relative mb-4 h-[300px] w-full">
   <canvas bind:this={canvas} class="w-full" />
 </div>

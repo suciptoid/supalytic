@@ -15,11 +15,12 @@
       1
     </div>
     Add this script to your website in the
-    <code class="text-mono mx-1 rounded-md border bg-gray-100 px-1 dark:bg-gray-400/10"
-      >&lt;head&gt;....&lt;/head&gt;</code
-    > section of your website.
+    <div class="text-mono mx-1 rounded-md border bg-gray-100 px-1 dark:bg-gray-400/10">
+      &lt;head&gt;....&lt;/head&gt;
+    </div>
+    section of your website.
   </div>
-  <div class="my-3 rounded-md border p-3 font-mono text-xs">
+  <div class="my-3 overflow-auto rounded-md border p-3 font-mono text-xs">
     {code}
   </div>
   <div class="my-2 flex flex-wrap items-center text-sm">
