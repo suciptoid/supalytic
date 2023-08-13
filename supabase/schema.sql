@@ -30,7 +30,7 @@ CREATE EXTENSION IF NOT EXISTS "supabase_vault" WITH SCHEMA "vault";
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
 
-CREATE FUNCTION "public"."calculate_metrics"("website_id" "uuid", "start_time" timestamp without time zone, "end_time" timestamp without time zone, "filters" "jsonb") RETURNS TABLE("metrics" character varying, "name" character varying, "unique_visitor" bigint, "page_view" bigint, "time_interval" timestamp with time zone)
+CREATE FUNCTION "public"."get_metrics"("website_id" "uuid", "start_time" timestamp without time zone, "end_time" timestamp without time zone, "time_group" "text" DEFAULT 'hourly'::"text", "filters" "jsonb" DEFAULT '{}'::"jsonb") RETURNS TABLE("metrics" character varying, "name" character varying, "unique_visitor" bigint, "page_view" bigint, "time_interval" timestamp with time zone)
     LANGUAGE "plpgsql"
     AS $$
 DECLARE
@@ -41,6 +41,7 @@ DECLARE
     country_filter text;
     url_filter text;
     referer_filter text;
+    time_interval_expression text;
 BEGIN
     -- Extract filter values from the JSONB object
     os_filter := filters->>'os';
@@ -76,6 +77,18 @@ BEGIN
     END IF;
 
     -- Repeat the above pattern for other filter options
+    
+    IF time_group = 'hourly' THEN
+        time_interval_expression := '1 hour';
+    ELSIF time_group = 'daily' THEN
+        time_interval_expression := '1 day';
+    ELSIF time_group = 'monthly' THEN
+        time_interval_expression := '1 month';
+    ELSIF time_group = 'yearly' THEN
+        time_interval_expression := '1 year';
+    ELSE
+        RAISE EXCEPTION 'Invalid time group: %', time_group;
+    END IF;
 
     RETURN QUERY EXECUTE '
         WITH common_data AS (
@@ -97,10 +110,10 @@ BEGIN
         )
         SELECT
             ''all''::varchar AS metrics,
-            ''hourly''::varchar AS name,
+            ''' || time_group || ''' AS name,
             count(distinct cd.session_id) AS unique_visitor,
             count(*) AS page_view,
-            time_bucket(''1 hour'', cd.created_at) AS time_interval
+            time_bucket(''' || time_interval_expression || ''', cd.created_at) AS time_interval
         FROM common_data AS cd
         GROUP BY time_interval
 
@@ -190,7 +203,7 @@ BEGIN
 END;
 $$;
 
-ALTER FUNCTION "public"."calculate_metrics"("website_id" "uuid", "start_time" timestamp without time zone, "end_time" timestamp without time zone, "filters" "jsonb") OWNER TO "postgres";
+ALTER FUNCTION "public"."get_metrics"("website_id" "uuid", "start_time" timestamp without time zone, "end_time" timestamp without time zone, "time_group" "text", "filters" "jsonb") OWNER TO "postgres";
 
 SET default_tablespace = '';
 
@@ -322,9 +335,9 @@ GRANT USAGE ON SCHEMA "public" TO "anon";
 GRANT USAGE ON SCHEMA "public" TO "authenticated";
 GRANT USAGE ON SCHEMA "public" TO "service_role";
 
-GRANT ALL ON FUNCTION "public"."calculate_metrics"("website_id" "uuid", "start_time" timestamp without time zone, "end_time" timestamp without time zone, "filters" "jsonb") TO "anon";
-GRANT ALL ON FUNCTION "public"."calculate_metrics"("website_id" "uuid", "start_time" timestamp without time zone, "end_time" timestamp without time zone, "filters" "jsonb") TO "authenticated";
-GRANT ALL ON FUNCTION "public"."calculate_metrics"("website_id" "uuid", "start_time" timestamp without time zone, "end_time" timestamp without time zone, "filters" "jsonb") TO "service_role";
+GRANT ALL ON FUNCTION "public"."get_metrics"("website_id" "uuid", "start_time" timestamp without time zone, "end_time" timestamp without time zone, "time_group" "text", "filters" "jsonb") TO "anon";
+GRANT ALL ON FUNCTION "public"."get_metrics"("website_id" "uuid", "start_time" timestamp without time zone, "end_time" timestamp without time zone, "time_group" "text", "filters" "jsonb") TO "authenticated";
+GRANT ALL ON FUNCTION "public"."get_metrics"("website_id" "uuid", "start_time" timestamp without time zone, "end_time" timestamp without time zone, "time_group" "text", "filters" "jsonb") TO "service_role";
 
 GRANT ALL ON TABLE "public"."sessions" TO "anon";
 GRANT ALL ON TABLE "public"."sessions" TO "authenticated";

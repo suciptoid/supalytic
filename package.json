@@ -10,7 +10,9 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "test": "vitest",
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
-    "format": "prettier --plugin-search-dir . --write ."
+    "format": "prettier --plugin-search-dir . --write .",
+    "gen:types": "supabase gen types --linked types typescript > src/lib/server/schema.ts",
+    "gen:schema": "supabase db dump -f supabase/schema.sql"
   },
   "devDependencies": {
     "@iconify/svelte": "^3.1.4",
