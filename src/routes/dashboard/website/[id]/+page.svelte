@@ -1,30 +1,10 @@
 <script lang="ts">
   import type { PageData } from './$types';
-  import { goto } from '$app/navigation';
-  import { page } from '$app/stores';
-  import { browser } from '$app/environment';
   import Chart from './Chart.svelte';
   import MetricCard from './MetricCard.svelte';
+  import DatePreset from './DatePreset.svelte';
 
   export let data: PageData;
-
-  let selectValue = 1; // days
-
-  const handleSelectValueChanged = (days: number) => {
-    if (days === 1) {
-      goto(`/dashboard/website/${$page.params.id}`);
-      return;
-    }
-    const today = new Date();
-    const dateStart = new Date().setDate(today.getDate() - days);
-    const start = new Date(dateStart).toISOString().split('T')[0].toString();
-    const dateEnd = today;
-    const end = new Date(dateEnd).toISOString().split('T')[0].toString();
-    const urlparams = new URLSearchParams({ start, end });
-    goto(`/dashboard/website/${$page.params.id}?${urlparams}`);
-  };
-
-  $: if (browser) handleSelectValueChanged(selectValue);
 </script>
 
 <div class="flex justify-between">
@@ -39,16 +19,7 @@
     </div>
   </div>
   <div class="mb-4">
-    <select
-      bind:value={selectValue}
-      name=""
-      id=""
-      class="rounded-md border border-gray-500/20 px-3 py-2 placeholder:text-gray-500/50 dark:bg-gray-500/10"
-    >
-      <option value={1}>Today</option>
-      <option value={7}>Last 7 days</option>
-      <option value={30}>Last 30 days</option>
-    </select>
+    <DatePreset />
   </div>
 </div>
 

@@ -40,8 +40,6 @@ export const load = (async ({ url, params, locals: { db, getSession } }) => {
     time_group = 'hourly';
   }
 
-  console.log('time group', time_group);
-
   const { data: metrics } = await db.rpc('get_metrics', {
     website_id: params.id,
     start_time: start,

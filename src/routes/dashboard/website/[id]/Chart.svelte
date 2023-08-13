@@ -59,7 +59,7 @@
       let baseformat = date.format(labelFormat);
 
       if (group == 'hourly') {
-        const eod = date.clone().endOf('day');
+        const eod = date.clone().endOf('hour');
         baseformat = `${baseformat} - ${eod.format('HH:mm')}`;
       }
 
