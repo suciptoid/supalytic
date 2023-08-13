@@ -9,8 +9,8 @@
   // const url = $page.url;
   const tabs: Tab[] = [
     { label: 'Statistics', path: `/dashboard/website/${$page.params.id}` },
-    { label: 'Setup', path: `/dashboard/website/${$page.params.id}/setup` },
-    { label: 'Settings', path: `/dashboard/website/${$page.params.id}/setting` }
+    { label: 'Settings', path: `/dashboard/website/${$page.params.id}/setup` }
+    // { label: 'Settings', path: `/dashboard/website/${$page.params.id}/setting` }
   ];
 </script>
 

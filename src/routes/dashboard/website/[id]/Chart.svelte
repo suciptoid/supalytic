@@ -55,7 +55,15 @@
     const base = Array.from({ length: diff }, (_, index) => index);
     const labels = base.map((_, index) => {
       const date = startDate.clone().add(index, diffGroup);
-      return date.format(labelFormat);
+
+      let baseformat = date.format(labelFormat);
+
+      if (group == 'hourly') {
+        const eod = date.clone().endOf('day');
+        baseformat = `${baseformat} - ${eod.format('HH:mm')}`;
+      }
+
+      return baseformat;
     });
     const groupedData = base.map((_, index) => {
       const date = startDate.clone().add(index, diffGroup);
