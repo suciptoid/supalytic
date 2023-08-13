@@ -1,6 +1,7 @@
 <script lang="ts">
   import { browser } from '$app/environment';
   import { Chart, registerables } from 'chart.js';
+  import dayjs from '$lib/day';
   Chart.register(...registerables);
 
   type Metrics = {
@@ -12,56 +13,91 @@
   };
 
   export let data: Metrics[];
+  export let start: string;
+  export let end: string;
+  export let group: 'hourly' | 'daily' | 'monthly' | 'yearly' | undefined | string = 'hourly';
 
   let canvas: HTMLCanvasElement | null;
   let chart: Chart | null = null;
 
-  const formatTimeFrame = (v: string) => {
-    const d = new Date(Date.parse(v));
-    const options: Intl.DateTimeFormatOptions = {
-      // year: 'numeric',
-      month: 'short',
-      day: '2-digit',
-      hourCycle: 'h24',
-      hour: '2-digit',
-      minute: '2-digit'
-    };
-    const formatted = new Intl.DateTimeFormat('en', options).format(d);
-    return formatted;
-  };
-
   const createChart = () => {
     if (chart) chart.destroy();
     const chartData = data || [];
-    // console.log({ canvas });
+    const startDate = dayjs(start);
+    const endDate = dayjs(end);
+
+    let diffGroup: 'year' | 'month' | 'day' | 'hour' | 'minute' =
+      group == 'yearly'
+        ? 'year'
+        : group == 'monthly'
+        ? 'month'
+        : group == 'daily'
+        ? 'day'
+        : group == 'hourly'
+        ? 'hour'
+        : 'minute';
+
+    let diff = endDate.diff(startDate, diffGroup);
+
+    if (group == 'hourly') {
+      diff = diff + 1;
+    }
+
+    const labelFormat =
+      group == 'yearly'
+        ? 'YYYY'
+        : group == 'monthly'
+        ? 'MMM YYYY'
+        : group == 'daily'
+        ? 'DD MMM YYYY'
+        : 'DD MMM YYYY HH:mm';
+    // labels is start from end
+    const base = Array.from({ length: diff }, (_, index) => index);
+    const labels = base.map((_, index) => {
+      const date = startDate.clone().add(index, diffGroup);
+      return date.format(labelFormat);
+    });
+    const groupedData = base.map((_, index) => {
+      const date = startDate.clone().add(index, diffGroup);
+      const dateEnd = date.clone().add(1, diffGroup);
+
+      // get data matched wit label date
+      const d = chartData.find((row) => {
+        const matched = dayjs(row.time_interval).isBetween(date, dateEnd, diffGroup, '[]');
+
+        return matched;
+      });
+
+      return {
+        pv: d?.page_view ?? 0,
+        uv: d?.unique_visitor ?? 0
+      };
+    });
+
     if (!canvas) return;
 
     chart = new Chart(canvas, {
       type: 'line',
       data: {
-        labels: chartData.map((row) => formatTimeFrame(row.time_interval)),
+        labels: labels,
         datasets: [
           {
             label: 'Unique visitors',
             type: 'line',
-            data: chartData.map((row) => row.unique_visitor),
+            data: groupedData.map((r) => r.uv),
             backgroundColor: '#22C55E55',
             borderColor: '#22C55EAA',
-            tension: 0.2,
-            // borderRadius: 4,
+            tension: 0.15,
             borderWidth: 2
-            // fill: true
           },
           {
             label: 'Page views',
             type: 'bar',
-            data: chartData.map((row) => row.page_view),
+            data: groupedData.map((r) => r.pv),
             backgroundColor: '#1CA5F544',
             borderColor: '#1CA5F5AA',
-            // tension: 0.2,
             borderRadius: 4,
             borderWidth: 1
-            // fill: true
           }
         ]
       },
@@ -77,7 +113,6 @@
           x: {
             grid: { display: false },
             ticks: { display: false }
-            // stacked: true
           },
           y: {
             beginAtZero: true,
@@ -90,7 +125,7 @@
     });
   };
 
-  $: if (browser && data && canvas) createChart();
+  $: if (browser && data && canvas && group) createChart();
 </script>
 
 <div class="relative mb-4 h-[400px] w-full">

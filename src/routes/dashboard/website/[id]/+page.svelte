@@ -53,7 +53,7 @@
 </div>
 
 <div class="my-4 rounded-md bg-white px-4 py-3 dark:bg-gray-500/10">
-  <Chart data={data.all} />
+  <Chart data={data.all} start={data.start} end={data.end} group={data.time_group} />
 </div>
 
 <div class="mb-6 grid grid-cols-1 gap-8 text-sm md:grid-cols-2">

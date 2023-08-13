@@ -17,7 +17,6 @@ const getIp = (headers: Headers) => {
 };
 
 const getDeviceType = (width: number, os: string) => {
-  // TODO: get device type based on browser
   if (width < 768) {
     return 'mobile';
   } else if (width < 992) {

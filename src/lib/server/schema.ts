@@ -52,24 +52,6 @@ export interface Database {
             columns: ["website_id"]
             referencedRelation: "websites"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "sessions_website_id_fkey"
-            columns: ["website_id"]
-            referencedRelation: "metrics_pageview"
-            referencedColumns: ["website_id"]
-          },
-          {
-            foreignKeyName: "sessions_website_id_fkey"
-            columns: ["website_id"]
-            referencedRelation: "website_metrics"
-            referencedColumns: ["website_id"]
-          },
-          {
-            foreignKeyName: "sessions_website_id_fkey"
-            columns: ["website_id"]
-            referencedRelation: "website_stats_hourly"
-            referencedColumns: ["website_id"]
           }
         ]
       }
@@ -106,34 +88,10 @@ export interface Database {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "website_events_session_id_fkey"
-            columns: ["session_id"]
-            referencedRelation: "metrics_pageview"
-            referencedColumns: ["session_id"]
-          },
-          {
             foreignKeyName: "website_events_website_id_fkey"
             columns: ["website_id"]
             referencedRelation: "websites"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "website_events_website_id_fkey"
-            columns: ["website_id"]
-            referencedRelation: "metrics_pageview"
-            referencedColumns: ["website_id"]
-          },
-          {
-            foreignKeyName: "website_events_website_id_fkey"
-            columns: ["website_id"]
-            referencedRelation: "website_metrics"
-            referencedColumns: ["website_id"]
-          },
-          {
-            foreignKeyName: "website_events_website_id_fkey"
-            columns: ["website_id"]
-            referencedRelation: "website_stats_hourly"
-            referencedColumns: ["website_id"]
           }
         ]
       }
@@ -168,24 +126,6 @@ export interface Database {
             columns: ["website_id"]
             referencedRelation: "websites"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "website_users_website_id_fkey"
-            columns: ["website_id"]
-            referencedRelation: "metrics_pageview"
-            referencedColumns: ["website_id"]
-          },
-          {
-            foreignKeyName: "website_users_website_id_fkey"
-            columns: ["website_id"]
-            referencedRelation: "website_metrics"
-            referencedColumns: ["website_id"]
-          },
-          {
-            foreignKeyName: "website_users_website_id_fkey"
-            columns: ["website_id"]
-            referencedRelation: "website_stats_hourly"
-            referencedColumns: ["website_id"]
           }
         ]
       }
@@ -212,49 +152,7 @@ export interface Database {
       }
     }
     Views: {
-      metrics_pageview: {
-        Row: {
-          browser: string | null
-          device: string | null
-          event_count: number | null
-          event_name: string | null
-          hour: string | null
-          os: string | null
-          path: string | null
-          referer: string | null
-          screen: number | null
-          session_id: string | null
-          website_domain: string | null
-          website_id: string | null
-        }
-        Relationships: []
-      }
-      website_metrics: {
-        Row: {
-          browser: string | null
-          device: string | null
-          event_count: number | null
-          event_name: string | null
-          hour: string | null
-          os: string | null
-          path: string | null
-          referer: string | null
-          screen: number | null
-          unique_visitor: number | null
-          website_domain: string | null
-          website_id: string | null
-        }
-        Relationships: []
-      }
-      website_stats_hourly: {
-        Row: {
-          hour: string | null
-          page_views: number | null
-          unique_visitors: number | null
-          website_id: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       calculate_metrics: {
@@ -275,14 +173,17 @@ export interface Database {
       get_metrics: {
         Args: {
           website_id: string
-          metric_name: string
-          range: string
+          start_time: string
+          end_time: string
+          time_group?: string
+          filters?: Json
         }
         Returns: {
+          metrics: string
           name: string
-          value: string
-          count: number
-          timeframe: string
+          unique_visitor: number
+          page_view: number
+          time_interval: string
         }[]
       }
       get_session: {
