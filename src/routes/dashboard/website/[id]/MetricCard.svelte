@@ -26,39 +26,43 @@
     <div class="flex-1">{title}</div>
     <div class="basis-1/5 text-right">Views</div>
   </div>
-  <div class="metric-rows space-y-1">
-    {#each rows as row}
-      <div
-        class="relative flex w-full rounded-md border border-gray-100 py-1 text-sm dark:border-slate-600"
-      >
+  <div class="metric-rows scrollable max-h-[300px] min-h-[150px] space-y-1 overflow-y-auto">
+    {#if rows?.length == 0}
+      <div class="flex h-full items-center justify-center">No data</div>
+    {:else}
+      {#each rows as row}
         <div
-          class="bar-chart absolute left-0 top-0 h-full rounded-md bg-blue-400 opacity-20 dark:bg-slate-600"
-          style="width: {row.width}%;"
-        />
-        <div class="metric-icon z-10 ml-2 flex items-center">
-          {#if type === 'browser'}
-            <Icon icon={browserIcons[row.name]} />
-          {:else if type === 'device'}
-            <Icon icon={deviceIcons[row.name]} />
-          {:else if type === 'os'}
-            <Icon icon={osIcons[row.name]} />
-          {:else if type === 'country'}
-            <Icon icon={`cif:${row.name?.toLowerCase()}`} />
-          {/if}
-        </div>
-        <div class="z-10 flex w-full flex-1 items-center truncate px-2">
-          <div class="truncate">
-            {#if type == 'referer' && !row.name}
-              None (direct)
-            {:else}
-              {row.name}
+          class="relative flex w-full rounded-md border border-gray-100 py-1 text-sm dark:border-slate-600"
+        >
+          <div
+            class="bar-chart absolute left-0 top-0 h-full rounded-md bg-blue-400 opacity-20 dark:bg-slate-600"
+            style="width: {row.width}%;"
+          />
+          <div class="metric-icon z-10 ml-2 flex items-center">
+            {#if type === 'browser'}
+              <Icon icon={browserIcons[row.name]} />
+            {:else if type === 'device'}
+              <Icon icon={deviceIcons[row.name]} />
+            {:else if type === 'os'}
+              <Icon icon={osIcons[row.name]} />
+            {:else if type === 'country'}
+              <Icon icon={`cif:${row.name?.toLowerCase()}`} />
             {/if}
           </div>
+          <div class="z-10 flex w-full flex-1 items-center truncate px-2">
+            <div class="truncate">
+              {#if type == 'referer' && !row.name}
+                None (direct)
+              {:else}
+                {row.name}
+              {/if}
+            </div>
+          </div>
+          <div class="z-10 flex-shrink-0 px-3 text-right font-medium text-gray-600">
+            {row.page_view?.toLocaleString()}
+          </div>
         </div>
-        <div class="z-10 flex-shrink-0 px-3 text-right font-medium text-gray-600">
-          {row.page_view?.toLocaleString()}
-        </div>
-      </div>
-    {/each}
+      {/each}
+    {/if}
   </div>
 </div>
