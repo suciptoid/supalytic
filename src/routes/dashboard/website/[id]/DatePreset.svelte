@@ -49,7 +49,7 @@
     ];
   });
 
-  $: activeLabel = presets.find((p) => p.id === active)?.label;
+  $: activeLabel = presets.find((p) => p.id === active)?.label || 'Today';
 
   const onSelectPreset = (preset: Preset) => {
     open = false;
