@@ -67,7 +67,7 @@
     });
     const groupedData = base.map((_, index) => {
       const date = startDate.clone().add(index, diffGroup);
-      const dateEnd = date.clone().add(1, diffGroup);
+      const dateEnd = date.clone().endOf(diffGroup);
 
       // get data matched wit label date
       const d = chartData.find((row) => {
