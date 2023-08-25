@@ -1,22 +1,28 @@
-# create-svelte
+# Supalytic
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Supalytic is a website analytic tracking alternative to Google Analytics. It is built with SvelteKit, Supabase auth, database (with timescale plugin for timeseries data) and deployed on Cloudflare pages.
 
-## Creating a project
+> Tis project is a hackaton project for [Supabase Launch Week 8](https://supabase.com/blog/supabase-lw8-hackathon) and [win as runner up](https://supabase.com/blog/launch-week-8-hackathon-winners) for **Most technically impressive** category.
 
-If you're seeing this, you've probably already done this step. Congrats!
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once you've clone this project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), 
+
+Create `.env` file and put your supabase credentials:
+
+```
+PUBLIC_SUPABASE_URL=
+PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_KEY=
+```
+
+> `SUPABASE_SERVICE_KEY` is required only for server side code
+
+Database schema available under: `supabase/schema.sql`, we dont use migration for now.
+
+start a development server:
 
 ```bash
 npm run dev
